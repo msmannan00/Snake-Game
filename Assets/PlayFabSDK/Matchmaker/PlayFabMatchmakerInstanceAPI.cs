@@ -46,7 +46,6 @@ namespace PlayFab
         /// <summary>
         /// Validates a user with the PlayFab service
         /// </summary>
-        [Obsolete("No longer available", true)]
         public void AuthUser(AuthUserRequest request, Action<AuthUserResponse> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
         {
             var context = (request == null ? null : request.AuthenticationContext) ?? authenticationContext;
@@ -58,7 +57,6 @@ namespace PlayFab
         /// <summary>
         /// Informs the PlayFab game server hosting service that the indicated user has joined the Game Server Instance specified
         /// </summary>
-        [Obsolete("No longer available", true)]
         public void PlayerJoined(PlayerJoinedRequest request, Action<PlayerJoinedResponse> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
         {
             var context = (request == null ? null : request.AuthenticationContext) ?? authenticationContext;
@@ -70,7 +68,6 @@ namespace PlayFab
         /// <summary>
         /// Informs the PlayFab game server hosting service that the indicated user has left the Game Server Instance specified
         /// </summary>
-        [Obsolete("No longer available", true)]
         public void PlayerLeft(PlayerLeftRequest request, Action<PlayerLeftResponse> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
         {
             var context = (request == null ? null : request.AuthenticationContext) ?? authenticationContext;
@@ -80,10 +77,20 @@ namespace PlayFab
         }
 
         /// <summary>
+        /// Instructs the PlayFab game server hosting service to instantiate a new Game Server Instance
+        /// </summary>
+        public void StartGame(StartGameRequest request, Action<StartGameResponse> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
+        {
+            var context = (request == null ? null : request.AuthenticationContext) ?? authenticationContext;
+            var callSettings = apiSettings ?? PlayFabSettings.staticSettings;
+            if (string.IsNullOrEmpty(callSettings.DeveloperSecretKey)) { throw new PlayFabException(PlayFabExceptionCode.DeveloperKeyNotSet, "Must set DeveloperSecretKey in settings to call this method"); }
+            PlayFabHttp.MakeApiCall("/Matchmaker/StartGame", request, AuthType.DevSecretKey, resultCallback, errorCallback, customData, extraHeaders, context, callSettings, this);
+        }
+
+        /// <summary>
         /// Retrieves the relevant details for a specified user, which the external match-making service can then use to compute
         /// effective matches
         /// </summary>
-        [Obsolete("No longer available", true)]
         public void UserInfo(UserInfoRequest request, Action<UserInfoResponse> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
         {
             var context = (request == null ? null : request.AuthenticationContext) ?? authenticationContext;

@@ -40,7 +40,7 @@ namespace PlayFab.GroupsModels
         /// </summary>
         public Dictionary<string,string> CustomTags;
         /// <summary>
-        /// The optional entity to perform this action on. Defaults to the currently logged in entity.
+        /// The entity to perform this action on.
         /// </summary>
         public EntityKey Entity;
         /// <summary>
@@ -95,7 +95,7 @@ namespace PlayFab.GroupsModels
         /// </summary>
         public Dictionary<string,string> CustomTags;
         /// <summary>
-        /// The optional entity to perform this action on. Defaults to the currently logged in entity.
+        /// The entity to perform this action on.
         /// </summary>
         public EntityKey Entity;
         /// <summary>
@@ -190,7 +190,7 @@ namespace PlayFab.GroupsModels
         /// </summary>
         public Dictionary<string,string> CustomTags;
         /// <summary>
-        /// The optional entity to perform this action on. Defaults to the currently logged in entity.
+        /// The entity to perform this action on.
         /// </summary>
         public EntityKey Entity;
         /// <summary>
@@ -250,7 +250,7 @@ namespace PlayFab.GroupsModels
         public EntityKey Group;
         /// <summary>
         /// The ID of the role. This must be unique within the group and cannot be changed. Role IDs must be between 1 and 64
-        /// characters long and are restricted to a-Z, A-Z, 0-9, '(', ')', '_', '-' and '.'.
+        /// characters long.
         /// </summary>
         public string RoleId;
         /// <summary>
@@ -740,7 +740,7 @@ namespace PlayFab.GroupsModels
         /// </summary>
         public Dictionary<string,string> CustomTags;
         /// <summary>
-        /// The optional entity to perform this action on. Defaults to the currently logged in entity.
+        /// The entity to perform this action on.
         /// </summary>
         public EntityKey Entity;
     }
@@ -771,7 +771,7 @@ namespace PlayFab.GroupsModels
         /// </summary>
         public Dictionary<string,string> CustomTags;
         /// <summary>
-        /// The optional entity to perform this action on. Defaults to the currently logged in entity.
+        /// The entity to perform this action on.
         /// </summary>
         public EntityKey Entity;
     }

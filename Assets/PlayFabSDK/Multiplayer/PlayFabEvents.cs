@@ -21,8 +21,6 @@ namespace PlayFab.Events
         public event PlayFabResultEvent<CreateBuildWithManagedContainerResponse> OnMultiplayerCreateBuildWithManagedContainerResultEvent;
         public event PlayFabRequestEvent<CreateBuildWithProcessBasedServerRequest> OnMultiplayerCreateBuildWithProcessBasedServerRequestEvent;
         public event PlayFabResultEvent<CreateBuildWithProcessBasedServerResponse> OnMultiplayerCreateBuildWithProcessBasedServerResultEvent;
-        public event PlayFabRequestEvent<CreateLobbyRequest> OnMultiplayerCreateLobbyRequestEvent;
-        public event PlayFabResultEvent<CreateLobbyResult> OnMultiplayerCreateLobbyResultEvent;
         public event PlayFabRequestEvent<CreateMatchmakingTicketRequest> OnMultiplayerCreateMatchmakingTicketRequestEvent;
         public event PlayFabResultEvent<CreateMatchmakingTicketResult> OnMultiplayerCreateMatchmakingTicketResultEvent;
         public event PlayFabRequestEvent<CreateRemoteUserRequest> OnMultiplayerCreateRemoteUserRequestEvent;
@@ -45,18 +43,10 @@ namespace PlayFab.Events
         public event PlayFabResultEvent<EmptyResponse> OnMultiplayerDeleteCertificateResultEvent;
         public event PlayFabRequestEvent<DeleteContainerImageRequest> OnMultiplayerDeleteContainerImageRepositoryRequestEvent;
         public event PlayFabResultEvent<EmptyResponse> OnMultiplayerDeleteContainerImageRepositoryResultEvent;
-        public event PlayFabRequestEvent<DeleteLobbyRequest> OnMultiplayerDeleteLobbyRequestEvent;
-        public event PlayFabResultEvent<LobbyEmptyResult> OnMultiplayerDeleteLobbyResultEvent;
         public event PlayFabRequestEvent<DeleteRemoteUserRequest> OnMultiplayerDeleteRemoteUserRequestEvent;
         public event PlayFabResultEvent<EmptyResponse> OnMultiplayerDeleteRemoteUserResultEvent;
-        public event PlayFabRequestEvent<DeleteSecretRequest> OnMultiplayerDeleteSecretRequestEvent;
-        public event PlayFabResultEvent<EmptyResponse> OnMultiplayerDeleteSecretResultEvent;
         public event PlayFabRequestEvent<EnableMultiplayerServersForTitleRequest> OnMultiplayerEnableMultiplayerServersForTitleRequestEvent;
         public event PlayFabResultEvent<EnableMultiplayerServersForTitleResponse> OnMultiplayerEnableMultiplayerServersForTitleResultEvent;
-        public event PlayFabRequestEvent<FindFriendLobbiesRequest> OnMultiplayerFindFriendLobbiesRequestEvent;
-        public event PlayFabResultEvent<FindFriendLobbiesResult> OnMultiplayerFindFriendLobbiesResultEvent;
-        public event PlayFabRequestEvent<FindLobbiesRequest> OnMultiplayerFindLobbiesRequestEvent;
-        public event PlayFabResultEvent<FindLobbiesResult> OnMultiplayerFindLobbiesResultEvent;
         public event PlayFabRequestEvent<GetAssetDownloadUrlRequest> OnMultiplayerGetAssetDownloadUrlRequestEvent;
         public event PlayFabResultEvent<GetAssetDownloadUrlResponse> OnMultiplayerGetAssetDownloadUrlResultEvent;
         public event PlayFabRequestEvent<GetAssetUploadUrlRequest> OnMultiplayerGetAssetUploadUrlRequestEvent;
@@ -67,8 +57,6 @@ namespace PlayFab.Events
         public event PlayFabResultEvent<BuildAliasDetailsResponse> OnMultiplayerGetBuildAliasResultEvent;
         public event PlayFabRequestEvent<GetContainerRegistryCredentialsRequest> OnMultiplayerGetContainerRegistryCredentialsRequestEvent;
         public event PlayFabResultEvent<GetContainerRegistryCredentialsResponse> OnMultiplayerGetContainerRegistryCredentialsResultEvent;
-        public event PlayFabRequestEvent<GetLobbyRequest> OnMultiplayerGetLobbyRequestEvent;
-        public event PlayFabResultEvent<GetLobbyResult> OnMultiplayerGetLobbyResultEvent;
         public event PlayFabRequestEvent<GetMatchRequest> OnMultiplayerGetMatchRequestEvent;
         public event PlayFabResultEvent<GetMatchResult> OnMultiplayerGetMatchResultEvent;
         public event PlayFabRequestEvent<GetMatchmakingQueueRequest> OnMultiplayerGetMatchmakingQueueRequestEvent;
@@ -93,20 +81,8 @@ namespace PlayFab.Events
         public event PlayFabResultEvent<GetTitleMultiplayerServersQuotaChangeResponse> OnMultiplayerGetTitleMultiplayerServersQuotaChangeResultEvent;
         public event PlayFabRequestEvent<GetTitleMultiplayerServersQuotasRequest> OnMultiplayerGetTitleMultiplayerServersQuotasRequestEvent;
         public event PlayFabResultEvent<GetTitleMultiplayerServersQuotasResponse> OnMultiplayerGetTitleMultiplayerServersQuotasResultEvent;
-        public event PlayFabRequestEvent<InviteToLobbyRequest> OnMultiplayerInviteToLobbyRequestEvent;
-        public event PlayFabResultEvent<LobbyEmptyResult> OnMultiplayerInviteToLobbyResultEvent;
-        public event PlayFabRequestEvent<JoinArrangedLobbyRequest> OnMultiplayerJoinArrangedLobbyRequestEvent;
-        public event PlayFabResultEvent<JoinLobbyResult> OnMultiplayerJoinArrangedLobbyResultEvent;
-        public event PlayFabRequestEvent<JoinLobbyRequest> OnMultiplayerJoinLobbyRequestEvent;
-        public event PlayFabResultEvent<JoinLobbyResult> OnMultiplayerJoinLobbyResultEvent;
-        public event PlayFabRequestEvent<JoinLobbyAsServerRequest> OnMultiplayerJoinLobbyAsServerRequestEvent;
-        public event PlayFabResultEvent<JoinLobbyAsServerResult> OnMultiplayerJoinLobbyAsServerResultEvent;
         public event PlayFabRequestEvent<JoinMatchmakingTicketRequest> OnMultiplayerJoinMatchmakingTicketRequestEvent;
         public event PlayFabResultEvent<JoinMatchmakingTicketResult> OnMultiplayerJoinMatchmakingTicketResultEvent;
-        public event PlayFabRequestEvent<LeaveLobbyRequest> OnMultiplayerLeaveLobbyRequestEvent;
-        public event PlayFabResultEvent<LobbyEmptyResult> OnMultiplayerLeaveLobbyResultEvent;
-        public event PlayFabRequestEvent<LeaveLobbyAsServerRequest> OnMultiplayerLeaveLobbyAsServerRequestEvent;
-        public event PlayFabResultEvent<LobbyEmptyResult> OnMultiplayerLeaveLobbyAsServerResultEvent;
         public event PlayFabRequestEvent<ListMultiplayerServersRequest> OnMultiplayerListArchivedMultiplayerServersRequestEvent;
         public event PlayFabResultEvent<ListMultiplayerServersResponse> OnMultiplayerListArchivedMultiplayerServersResultEvent;
         public event PlayFabRequestEvent<ListAssetSummariesRequest> OnMultiplayerListAssetSummariesRequestEvent;
@@ -131,8 +107,6 @@ namespace PlayFab.Events
         public event PlayFabResultEvent<ListPartyQosServersResponse> OnMultiplayerListPartyQosServersResultEvent;
         public event PlayFabRequestEvent<ListQosServersForTitleRequest> OnMultiplayerListQosServersForTitleRequestEvent;
         public event PlayFabResultEvent<ListQosServersForTitleResponse> OnMultiplayerListQosServersForTitleResultEvent;
-        public event PlayFabRequestEvent<ListSecretSummariesRequest> OnMultiplayerListSecretSummariesRequestEvent;
-        public event PlayFabResultEvent<ListSecretSummariesResponse> OnMultiplayerListSecretSummariesResultEvent;
         public event PlayFabRequestEvent<ListServerBackfillTicketsForPlayerRequest> OnMultiplayerListServerBackfillTicketsForPlayerRequestEvent;
         public event PlayFabResultEvent<ListServerBackfillTicketsForPlayerResult> OnMultiplayerListServerBackfillTicketsForPlayerResultEvent;
         public event PlayFabRequestEvent<ListTitleMultiplayerServersQuotaChangesRequest> OnMultiplayerListTitleMultiplayerServersQuotaChangesRequestEvent;
@@ -141,26 +115,14 @@ namespace PlayFab.Events
         public event PlayFabResultEvent<ListVirtualMachineSummariesResponse> OnMultiplayerListVirtualMachineSummariesResultEvent;
         public event PlayFabRequestEvent<RemoveMatchmakingQueueRequest> OnMultiplayerRemoveMatchmakingQueueRequestEvent;
         public event PlayFabResultEvent<RemoveMatchmakingQueueResult> OnMultiplayerRemoveMatchmakingQueueResultEvent;
-        public event PlayFabRequestEvent<RemoveMemberFromLobbyRequest> OnMultiplayerRemoveMemberRequestEvent;
-        public event PlayFabResultEvent<LobbyEmptyResult> OnMultiplayerRemoveMemberResultEvent;
         public event PlayFabRequestEvent<RequestMultiplayerServerRequest> OnMultiplayerRequestMultiplayerServerRequestEvent;
         public event PlayFabResultEvent<RequestMultiplayerServerResponse> OnMultiplayerRequestMultiplayerServerResultEvent;
-        public event PlayFabRequestEvent<RequestPartyServiceRequest> OnMultiplayerRequestPartyServiceRequestEvent;
-        public event PlayFabResultEvent<RequestPartyServiceResponse> OnMultiplayerRequestPartyServiceResultEvent;
         public event PlayFabRequestEvent<RolloverContainerRegistryCredentialsRequest> OnMultiplayerRolloverContainerRegistryCredentialsRequestEvent;
         public event PlayFabResultEvent<RolloverContainerRegistryCredentialsResponse> OnMultiplayerRolloverContainerRegistryCredentialsResultEvent;
         public event PlayFabRequestEvent<SetMatchmakingQueueRequest> OnMultiplayerSetMatchmakingQueueRequestEvent;
         public event PlayFabResultEvent<SetMatchmakingQueueResult> OnMultiplayerSetMatchmakingQueueResultEvent;
         public event PlayFabRequestEvent<ShutdownMultiplayerServerRequest> OnMultiplayerShutdownMultiplayerServerRequestEvent;
         public event PlayFabResultEvent<EmptyResponse> OnMultiplayerShutdownMultiplayerServerResultEvent;
-        public event PlayFabRequestEvent<SubscribeToLobbyResourceRequest> OnMultiplayerSubscribeToLobbyResourceRequestEvent;
-        public event PlayFabResultEvent<SubscribeToLobbyResourceResult> OnMultiplayerSubscribeToLobbyResourceResultEvent;
-        public event PlayFabRequestEvent<SubscribeToMatchResourceRequest> OnMultiplayerSubscribeToMatchmakingResourceRequestEvent;
-        public event PlayFabResultEvent<SubscribeToMatchResourceResult> OnMultiplayerSubscribeToMatchmakingResourceResultEvent;
-        public event PlayFabRequestEvent<UnsubscribeFromLobbyResourceRequest> OnMultiplayerUnsubscribeFromLobbyResourceRequestEvent;
-        public event PlayFabResultEvent<LobbyEmptyResult> OnMultiplayerUnsubscribeFromLobbyResourceResultEvent;
-        public event PlayFabRequestEvent<UnsubscribeFromMatchResourceRequest> OnMultiplayerUnsubscribeFromMatchmakingResourceRequestEvent;
-        public event PlayFabResultEvent<UnsubscribeFromMatchResourceResult> OnMultiplayerUnsubscribeFromMatchmakingResourceResultEvent;
         public event PlayFabRequestEvent<UntagContainerImageRequest> OnMultiplayerUntagContainerImageRequestEvent;
         public event PlayFabResultEvent<EmptyResponse> OnMultiplayerUntagContainerImageResultEvent;
         public event PlayFabRequestEvent<UpdateBuildAliasRequest> OnMultiplayerUpdateBuildAliasRequestEvent;
@@ -171,14 +133,8 @@ namespace PlayFab.Events
         public event PlayFabResultEvent<EmptyResponse> OnMultiplayerUpdateBuildRegionResultEvent;
         public event PlayFabRequestEvent<UpdateBuildRegionsRequest> OnMultiplayerUpdateBuildRegionsRequestEvent;
         public event PlayFabResultEvent<EmptyResponse> OnMultiplayerUpdateBuildRegionsResultEvent;
-        public event PlayFabRequestEvent<UpdateLobbyRequest> OnMultiplayerUpdateLobbyRequestEvent;
-        public event PlayFabResultEvent<LobbyEmptyResult> OnMultiplayerUpdateLobbyResultEvent;
-        public event PlayFabRequestEvent<UpdateLobbyAsServerRequest> OnMultiplayerUpdateLobbyAsServerRequestEvent;
-        public event PlayFabResultEvent<LobbyEmptyResult> OnMultiplayerUpdateLobbyAsServerResultEvent;
         public event PlayFabRequestEvent<UploadCertificateRequest> OnMultiplayerUploadCertificateRequestEvent;
         public event PlayFabResultEvent<EmptyResponse> OnMultiplayerUploadCertificateResultEvent;
-        public event PlayFabRequestEvent<UploadSecretRequest> OnMultiplayerUploadSecretRequestEvent;
-        public event PlayFabResultEvent<EmptyResponse> OnMultiplayerUploadSecretResultEvent;
     }
 }
 #endif

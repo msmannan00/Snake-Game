@@ -16,10 +16,9 @@ namespace PlayFab
         public virtual string ProductionEnvironmentUrl { get { return _ProductionEnvironmentUrl; } set { _ProductionEnvironmentUrl = value; } }
         /// <summary> You must set this value for PlayFabSdk to work properly (Found in the Game Manager for your title, at the PlayFab Website) </summary>
         public virtual string TitleId { get; set; }
-
         /// <summary> The name of a customer vertical. This is only for customers running a private cluster.  Generally you shouldn't touch this </summary>
         internal virtual string VerticalName { get; set; }
-#if ENABLE_PLAYFABSERVER_API || ENABLE_PLAYFABADMIN_API || UNITY_EDITOR || ENABLE_PLAYFAB_SECRETKEY
+#if ENABLE_PLAYFABSERVER_API || ENABLE_PLAYFABADMIN_API || UNITY_EDITOR
         /// <summary> You must set this value for PlayFabSdk to work properly (Found in the Game Manager for your title, at the PlayFab Website) </summary>
         public virtual string DeveloperSecretKey { get; set; }
 #endif
@@ -27,13 +26,6 @@ namespace PlayFab
         public virtual bool DisableDeviceInfo { get; set; }
         /// <summary> Set this to true to prevent focus change information from leaving the device </summary>
         public virtual bool DisableFocusTimeCollection { get; set; }
-
-        /// <summary> Set to enable Gzip compression on all responses. Defaults to false. </summary>
-        public virtual bool CompressResponses { get; set; }
-
-        /// <summary> Enables the custom Gzip DownloadHandler on all responses. Defaults to true. </summary>
-        internal virtual bool DecompressWithDownloadHandler { get; set; } = true;
-
 
         public virtual string GetFullUrl(string apiCall, Dictionary<string, string> getParams)
         {
@@ -61,7 +53,7 @@ namespace PlayFab
             set { var so = GetSO(); if (so != null) so.VerticalName = value; base.VerticalName = value; }
         }
 
-#if ENABLE_PLAYFABSERVER_API || ENABLE_PLAYFABADMIN_API || UNITY_EDITOR || ENABLE_PLAYFAB_SECRETKEY
+#if ENABLE_PLAYFABSERVER_API || ENABLE_PLAYFABADMIN_API || UNITY_EDITOR
         public override string DeveloperSecretKey
         {
             get { var so = GetSO(); return so == null ? base.DeveloperSecretKey : so.DeveloperSecretKey; }
@@ -85,18 +77,6 @@ namespace PlayFab
         {
             get { var so = GetSO(); return so == null ? base.DisableFocusTimeCollection : so.DisableFocusTimeCollection; }
             set { var so = GetSO(); if (so != null) so.DisableFocusTimeCollection = value; base.DisableFocusTimeCollection = value; }
-        }
-
-        public override bool CompressResponses
-        {
-            get { var so = GetSO(); return so == null ? base.CompressResponses : so.CompressResponses; }
-            set { var so = GetSO(); if (so != null) so.CompressResponses = value; base.CompressResponses = value; }
-        }
-
-        internal override bool DecompressWithDownloadHandler
-        {
-            get { var so = GetSO(); return so == null ? base.DecompressWithDownloadHandler : so.DecompressWithDownloadHandler; }
-            set { var so = GetSO(); if (so != null) so.DecompressWithDownloadHandler = value; base.DecompressWithDownloadHandler = value; }
         }
     }
 }
