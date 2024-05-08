@@ -9,7 +9,8 @@ TagManager:
   - authScreen
   - rootController
   - alerts
-  - playScreen
+  - gameplayScreen
+  - levelScreen
   layers:
   - Default
   - TransparentFX

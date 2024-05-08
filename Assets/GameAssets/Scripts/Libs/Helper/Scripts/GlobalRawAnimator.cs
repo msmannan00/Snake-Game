@@ -33,4 +33,9 @@ public class GlobalRawAnimator : MonoBehaviour
     {
         GlobalAnimator.Instance.WobbleObject(pAppObject);
     }
+
+    public void ShakeObject(GameObject pAppObject)
+    {
+        GlobalAnimator.Instance.WobbleObject(pAppObject);
+    }
 }

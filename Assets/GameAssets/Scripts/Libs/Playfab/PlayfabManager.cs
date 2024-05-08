@@ -31,6 +31,7 @@ public class PlayfabManager : MonoBehaviour
         res =>
         {
             OnSaveuser(pEmail, pPassword);
+            pCallbackSuccess(pEmail, pPassword);
         },
         err =>
         {

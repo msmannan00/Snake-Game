@@ -150,21 +150,8 @@ public class AuthController : MonoBehaviour, PageController
     public void onSignIn()
     {
         gameObject.transform.parent.SetSiblingIndex(1);
-        bool mFirsTimePlanInitialized = PreferenceManager.Instance.GetBool("FirstTimePlanInitialized_" + userSessionManager.Instance.mProfileUsername, false);
-        if (!mFirsTimePlanInitialized)
-        {
-            Dictionary<string, object> mData = new Dictionary<string, object>
-            {
-                { AuthKey.sAuthType, AuthConstant.sAuthTypeSignup}
-            };
-
-            StateManager.Instance.OpenStaticScreen("planCreator", gameObject, "planCreatorScreen", mData);
-        }
-        else
-        {
-            Dictionary<string, object> mData = new Dictionary<string, object> { };
-            StateManager.Instance.OpenStaticScreen("dashboard", gameObject, "dashboardScreen", mData);
-        }
+        Dictionary<string, object> mData = new Dictionary<string, object> { };
+        StateManager.Instance.OpenStaticScreen("level", gameObject, "levelScreen", null);
     }
 
     public void OnSignGmail()

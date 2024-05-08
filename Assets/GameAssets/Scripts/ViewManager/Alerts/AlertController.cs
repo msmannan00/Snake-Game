@@ -15,9 +15,13 @@ public class AlertController : MonoBehaviour
     {
         aHeader.text = pHeader;
         aTrigger.text = pTrigger;
-        aSecondaryTrigger.text = pSecondaryTrigger;
         aMessage.text = pMessage;
         mCallbackSuccess = pCallbackSuccess;
+
+        if (aSecondaryTrigger != null)
+        {
+            aSecondaryTrigger.text = pSecondaryTrigger;
+        }
     }
 
     public void OnTriggerPrimary()

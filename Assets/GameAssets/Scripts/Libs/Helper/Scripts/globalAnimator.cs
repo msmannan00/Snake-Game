@@ -131,5 +131,17 @@ public class GlobalAnimator : GenericSingletonClass<GlobalAnimator>
         pAppObject.transform.DOComplete();
         pAppObject.transform.DOPunchScale(Vector3.one - mWobbleStrength, mWobbleDuration, 1, 0);
     }
+
+    public void ShakeObject(GameObject pAppObject)
+    {
+        float shakeDuration = 0.45f;
+        float shakeStrength = 0.1f;
+        int vibrato = 10;
+        float randomness = 90;
+        bool fadeOut = true;
+
+        pAppObject.transform.DOComplete();
+        pAppObject.transform.DOShakeScale(shakeDuration, shakeStrength, vibrato, randomness, fadeOut);
+    }
 }
 
