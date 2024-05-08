@@ -3,8 +3,6 @@ using TMPro;
 using System;
 using PlayFab;
 using System.Collections.Generic;
-using PlayFab.Internal;
-using UnityEngine.UI;
 
 public class AuthController : MonoBehaviour, PageController
 {

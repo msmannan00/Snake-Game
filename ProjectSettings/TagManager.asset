@@ -11,6 +11,8 @@ TagManager:
   - alerts
   - gameplayScreen
   - levelScreen
+  - overlayBlocker
+  - globalAudioSource
   layers:
   - Default
   - TransparentFX

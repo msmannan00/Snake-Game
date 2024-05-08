@@ -1,11 +1,16 @@
 using System;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class GameplayManager : MonoBehaviour, PageController
 {
+    public TMP_Text aLevel;
+
     public void onInit(Dictionary<string, object> data)
     {
+        int mCurrentLevel = PlayerPrefs.GetInt("current_level", 1);
+        aLevel.SetText("Level " + mCurrentLevel.ToString());
     }
 
     public void onLogout()
@@ -29,7 +34,7 @@ public class GameplayManager : MonoBehaviour, PageController
         GameObject alertPrefab = Resources.Load<GameObject>("Prefabs/alerts/alertMenu");
         GameObject alertsContainer = GameObject.FindGameObjectWithTag("alerts");
         GameObject instantiatedAlert = Instantiate(alertPrefab, alertsContainer.transform);
-        AlertController alertController = instantiatedAlert.GetComponent<AlertController>();
+        AlertMenuController alertController = instantiatedAlert.GetComponent<AlertMenuController>();
         alertController.InitController("Your Game Session is paused", callbackSuccess, pTrigger: "Restart", pHeader:"Game Paused");
         GlobalAnimator.Instance.AnimateAlpha(instantiatedAlert, true);
     }

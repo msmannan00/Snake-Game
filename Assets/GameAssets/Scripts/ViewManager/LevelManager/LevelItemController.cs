@@ -7,6 +7,7 @@ public class LevelItemController : MonoBehaviour
     public TMP_Text aLevel;
     public GameObject aLock;
     public GameObject aLockIcon;
+    public GameObject mParent;
     int mCurrentLevel; 
     int mItemLevel;
 
@@ -19,8 +20,9 @@ public class LevelItemController : MonoBehaviour
     {
 
     }
-    public void InitCategory(int pCurrentLevel, int pItemLevel)
+    public void InitCategory(int pCurrentLevel, int pItemLevel, GameObject pParent)
     {
+        mParent = pParent;
         mCurrentLevel = pCurrentLevel;
         mItemLevel = pItemLevel;
         if (mItemLevel >= mCurrentLevel)
@@ -30,13 +32,13 @@ public class LevelItemController : MonoBehaviour
         }
         else
         {
-            aLevel.SetText(pItemLevel.ToString());
+            aLevel.SetText((pItemLevel+1).ToString());
         }
     }
 
     public void onClick()
     {
-        if (mItemLevel > mCurrentLevel)
+        if (mItemLevel >= mCurrentLevel)
         {
             GlobalAnimator.Instance.ShakeObject(aLockIcon);
         }
@@ -46,7 +48,7 @@ public class LevelItemController : MonoBehaviour
             {
                 { "currentLevel", mItemLevel}
             };
-            StateManager.Instance.OpenStaticScreen("gameplay", gameObject, "gameplayScreen", mData);
+            StateManager.Instance.OpenStaticScreen("gameplay", mParent, "gameplayScreen", mData);
         }
     }
 

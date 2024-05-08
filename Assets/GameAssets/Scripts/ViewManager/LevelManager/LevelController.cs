@@ -23,7 +23,7 @@ public class LevelController : MonoBehaviour, PageController
             mLevel.name = "Category_" + index;
             mLevel.transform.SetParent(aScrollViewContent.transform, false);
             LevelItemController mLevelItemController = mLevel.GetComponent<LevelItemController>();
-            mLevelItemController.InitCategory(mCurrentLevel, index);
+            mLevelItemController.InitCategory(mCurrentLevel, index, gameObject);
         }
     }
 
