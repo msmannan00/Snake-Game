@@ -34,5 +34,6 @@ public class CandyColorStripper : MonoBehaviour
             GameUtils.SwapMaterialsAndMesh(_candy.gameObject, RefCandy);
            
         }
+        StaticAudioManager.Instance.playPaperSound();
     }
 }

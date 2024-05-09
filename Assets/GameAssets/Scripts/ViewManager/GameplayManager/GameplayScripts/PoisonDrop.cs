@@ -7,7 +7,6 @@ public class PoisonDrop : MonoBehaviour
 
     [HideInInspector]
     public PoisonDripper PoisonDripper;
-    // Start is called before the first frame update
     void Start()
     {
         DestroyMe();
@@ -30,7 +29,7 @@ public class PoisonDrop : MonoBehaviour
             GameUtils.SwapMaterialsAndMesh(_candy.gameObject, PoisonDripper.RefCandy.gameObject);
             _candy.IsCandyRoten = true ;
             _candy.MColorCode = ColorCode.Roten;
-
+            StaticAudioManager.Instance.playDropSound();
         }
     }
 }

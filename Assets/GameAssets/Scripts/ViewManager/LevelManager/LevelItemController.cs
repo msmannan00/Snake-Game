@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Animations;
 
 public class LevelItemController : MonoBehaviour
 {
@@ -44,6 +45,7 @@ public class LevelItemController : MonoBehaviour
         }
         else
         {
+            userSessionManager.Instance.currentLevel = mItemLevel;
             Dictionary<string, object> mData = new Dictionary<string, object>
             {
                 { "currentLevel", mItemLevel}

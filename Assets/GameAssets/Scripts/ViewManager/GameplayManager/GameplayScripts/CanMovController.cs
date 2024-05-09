@@ -58,7 +58,7 @@ public class CanMovController : MonoBehaviour
                 FocusedObj.transform.localPosition = Vector3.Lerp(FocusedObj.transform.localPosition,
                     new Vector3(-currentFocusedPoint.x, 
                     FocusedObj.transform.localPosition.y, MoveSpiralController.BaseTransform.localPosition.z +( MoveSpiralController.baseCandy.width * (MoveSpiralController.StackedCandies.Count -1)))
-                    , Time.deltaTime * followSpeed); ;
+                    , Time.deltaTime * followSpeed);
             }
         }
     }

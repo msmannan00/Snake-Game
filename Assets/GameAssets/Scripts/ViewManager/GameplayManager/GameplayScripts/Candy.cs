@@ -70,12 +70,12 @@ public class Candy : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         Candy _candy;
-
         if(_candy = other.GetComponent<Candy>())
         {
             if (!_candy.HasAlreadyStacked)
             {
                 SpiralRootController.RegisterNewCandy(_candy);
+                StaticAudioManager.Instance.playEatingSound();
             }
         }
 

@@ -12,6 +12,7 @@ public class LevelController : MonoBehaviour, PageController
     public void onInit(Dictionary<string, object> data)
     {
         mCurrentLevel = PlayerPrefs.GetInt("current_level", 1);
+        UpdateCellSize();
         onInitScroll();
     }
 
@@ -29,7 +30,8 @@ public class LevelController : MonoBehaviour, PageController
 
     void UpdateCellSize()
     {
-        gridLayoutGroup.cellSize = new Vector2(gridLayoutGroup.GetComponent<RectTransform>().rect.width / 5.1f, gridLayoutGroup.cellSize.y);
+        //int size = gridLayoutGroup.cellSize.y;
+        //gridLayoutGroup.cellSize = new Vector2(size*1.2f, size * 1.2f);
     }
 
 }

@@ -351,6 +351,7 @@ MonoBehaviour:
   aLevel: {fileID: 2545979855394422227}
   aLock: {fileID: 2172671680800825442}
   aLockIcon: {fileID: 2969012008465852998}
+  mParent: {fileID: 0}
 --- !u!114 &3360803800393693679
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -387,6 +388,18 @@ MonoBehaviour:
           m_Arguments:
             m_ObjectArgument: {fileID: 8125489910617473741}
             m_ObjectArgumentAssemblyTypeName: UnityEngine.AudioSource, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+        - m_Target: {fileID: 3360803800393693678}
+          m_TargetAssemblyTypeName: GlobalRawAnimator, Assembly-CSharp
+          m_MethodName: WobbleObject
+          m_Mode: 2
+          m_Arguments:
+            m_ObjectArgument: {fileID: 6487125410352332229}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
             m_IntArgument: 0
             m_FloatArgument: 0
             m_StringArgument: 

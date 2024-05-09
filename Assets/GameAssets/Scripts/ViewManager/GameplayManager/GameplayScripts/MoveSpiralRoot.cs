@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
@@ -14,7 +15,10 @@ public class MoveSpiralRoot : MonoBehaviour
     public static MoveSpiralRoot Instance;
 
     public int currentQueueLength = 0;
-    
+    bool isGameEnd = false;
+    int maxSimilarityCount = 0;
+    bool mSimilarityCounted = false;
+
     private void Awake()
     {
         if(Instance == null)
@@ -28,10 +32,72 @@ public class MoveSpiralRoot : MonoBehaviour
         StackedCandies.Add(baseCandy);
     }
 
-    // Update is called once per frame
+
+    public void onNextLevel()
+    {
+        Action callbackSuccess = () =>
+        {
+            GameObject[] allObjects = FindObjectsOfType<GameObject>();
+            foreach (var gameObject in allObjects)
+            {
+                if (gameObject.name.Contains("Candy"))
+                {
+                    Destroy(gameObject);
+                }
+            }
+
+            int mCurrentLevel = PlayerPrefs.GetInt("current_level", 1);
+            if((userSessionManager.Instance.currentLevel+1) >= mCurrentLevel && maxSimilarityCount>2)
+            {
+                PlayerPrefs.SetInt("current_level", mCurrentLevel + 1);
+            }
+            GameObject mGameplayScreen = gameObject;
+            allObjects = FindObjectsOfType<GameObject>();
+            foreach (var gameObject in allObjects)
+            {
+                if (gameObject.name == "gameplayScreen(Clone)")
+                {
+                    GameplayManager manager = gameObject.GetComponent<GameplayManager>();
+                    if (manager != null)
+                    {
+                        manager.onRestartLevel();
+                    }
+                }
+            }
+        };
+
+        if (maxSimilarityCount > 2)
+        {
+            GameObject alertPrefab = Resources.Load<GameObject>("Prefabs/alerts/alertFinishedSuccess");
+            GameObject alertsContainer = GameObject.FindGameObjectWithTag("alerts");
+            GameObject instantiatedAlert = Instantiate(alertPrefab, alertsContainer.transform);
+            AlertController alertController = instantiatedAlert.GetComponent<AlertController>();
+            alertController.InitController("Awesome, You have finished this level. lets see you can keep your streak", callbackSuccess, pTrigger: "Next Level", pHeader: "Level Complete");
+            GlobalAnimator.Instance.AnimateAlpha(instantiatedAlert, true);
+        }
+        else
+        {
+            GameObject alertPrefab = Resources.Load<GameObject>("Prefabs/alerts/alertFinishedFailed");
+            GameObject alertsContainer = GameObject.FindGameObjectWithTag("alerts");
+            GameObject instantiatedAlert = Instantiate(alertPrefab, alertsContainer.transform);
+            AlertController alertController = instantiatedAlert.GetComponent<AlertController>();
+            alertController.InitController("Oh no, You have failed this level. lets see you can do it again", callbackSuccess, pTrigger: "Restart", pHeader: "Level Failed");
+            GlobalAnimator.Instance.AnimateAlpha(instantiatedAlert, true);
+        }
+    }
+
     void Update()
     {
-        if (StackedCandies.Count == 0) return;
+        if (StackedCandies.Count == 0)
+        {
+            if (!isGameEnd)
+            {
+                onNextLevel();
+            }
+            isGameEnd = true;
+            return;
+        }
+
         currentQueueLength =  StackedCandies.Count;
         transform.localPosition -= Vector3.forward * Time.deltaTime * moveSpeed;
         UpdateHead();
@@ -107,6 +173,7 @@ public class MoveSpiralRoot : MonoBehaviour
     {
         _bakedCandy.IsBaked = true;
         _bakedCandy.transform.parent = null;
+
         if (_bakedCandy.IsBaseCandy)
         {
             if (_bakedCandy.TailCandy)
@@ -114,8 +181,8 @@ public class MoveSpiralRoot : MonoBehaviour
                 _bakedCandy.TailCandy.IsBaseCandy = true;
                 baseCandy = _bakedCandy.TailCandy;
             }
-                _bakedCandy.IsBaseCandy = false;
-                _bakedCandy.FollowLead = null;
+            _bakedCandy.IsBaseCandy = false;
+            _bakedCandy.FollowLead = null;
         }
         else
         {
@@ -125,11 +192,38 @@ public class MoveSpiralRoot : MonoBehaviour
             }
         }
 
-        _bakedCandy.transform.parent = null;
         StackedCandies.Remove(_bakedCandy);
-
+        CheckLargestCandyGroup();
     }
-    
+
+    private void CheckLargestCandyGroup()
+    {
+        Dictionary<ColorCode, int> candyCount = new Dictionary<ColorCode, int>();
+        foreach (var candy in StackedCandies)
+        {
+            if (candyCount.ContainsKey(candy.MColorCode))
+                candyCount[candy.MColorCode]++;
+            else
+                candyCount[candy.MColorCode] = 1;
+        }
+
+        int maxCount = 0;
+        ColorCode mostCommonColorCode = default;
+        foreach (var pair in candyCount)
+        {
+            if (pair.Value > maxCount)
+            {
+                maxCount = pair.Value;
+                mostCommonColorCode = pair.Key;
+            }
+        }
+        if (!mSimilarityCounted)
+        {
+            maxSimilarityCount = maxCount;
+            mSimilarityCounted = true;
+        }
+        Debug.Log($"Most common color is {mostCommonColorCode} with a count of {maxCount}");
+    }
 
     public int GetCandyIndex(Candy candy)
     {

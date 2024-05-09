@@ -22,6 +22,7 @@ public class CakeBaker : MonoBehaviour
            // _candy.transform.DOMove(transform.position, 0.3f);
 
         }
+        StaticAudioManager.Instance.playPackingSound();
     }
 
 

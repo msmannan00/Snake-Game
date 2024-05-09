@@ -6,6 +6,7 @@ using UnityEngine;
 public class GameplayManager : MonoBehaviour, PageController
 {
     public TMP_Text aLevel;
+    private Camera mCamera;
 
     public void onInit(Dictionary<string, object> data)
     {
@@ -28,14 +29,21 @@ public class GameplayManager : MonoBehaviour, PageController
         {
             gameObject.transform.parent.SetSiblingIndex(1);
             Dictionary<string, object> mData = new Dictionary<string, object> { };
-            StateManager.Instance.OpenStaticScreen("gameplay", gameObject, "gameplayScreen", null);
+            StateManager.Instance.OpenStaticScreen("level", gameObject, "levelScreen", null);
+        };
+
+        Action callbackLevel = () =>
+        {
+            gameObject.transform.parent.SetSiblingIndex(1);
+            Dictionary<string, object> mData = new Dictionary<string, object> { };
+            StateManager.Instance.OpenStaticScreen("level", gameObject, "levelScreen", null);
         };
 
         GameObject alertPrefab = Resources.Load<GameObject>("Prefabs/alerts/alertMenu");
         GameObject alertsContainer = GameObject.FindGameObjectWithTag("alerts");
         GameObject instantiatedAlert = Instantiate(alertPrefab, alertsContainer.transform);
         AlertMenuController alertController = instantiatedAlert.GetComponent<AlertMenuController>();
-        alertController.InitController("Your Game Session is paused", callbackSuccess, pTrigger: "Restart", pHeader:"Game Paused");
+        alertController.InitController("Your Game Session is paused", callbackSuccess, callbackLevel, pTrigger: "Restart", pHeader:"Game Paused", pSecondaryTrigger : "Level Menu");
         GlobalAnimator.Instance.AnimateAlpha(instantiatedAlert, true);
     }
 
@@ -53,6 +61,13 @@ public class GameplayManager : MonoBehaviour, PageController
         AlertController alertController = instantiatedAlert.GetComponent<AlertController>();
         alertController.InitController("Oh no, You have failed this level. lets see you can do it again", callbackSuccess, pTrigger: "Restart", pHeader: "Level Failed");
         GlobalAnimator.Instance.AnimateAlpha(instantiatedAlert, true);
+    }
+
+    public void onRestartLevel()
+    {
+        gameObject.transform.parent.SetSiblingIndex(1);
+        Dictionary<string, object> mData = new Dictionary<string, object> { };
+        StateManager.Instance.OpenStaticScreen("level", gameObject, "levelScreen", null);
     }
 
     public void onNextLevel()
@@ -74,11 +89,26 @@ public class GameplayManager : MonoBehaviour, PageController
 
     void Start()
     {
-        
+        mCamera = GameObject.Find("gameMainCamera").GetComponent<Camera>();
+    }
+
+    void OnDestroy()
+    {
+        if (GameObject.Find("gameMainCamera") != null)
+        {
+            mCamera = GameObject.Find("gameMainCamera").GetComponent<Camera>();
+            if (mCamera != null)
+            {
+                mCamera.enabled = true;
+            }
+        }
     }
 
     void Update()
     {
-        
+        if (mCamera != null)
+        {
+            mCamera.enabled = false;
+        }
     }
 }

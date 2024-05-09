@@ -9,16 +9,18 @@ public class AlertMenuController : MonoBehaviour
     public TMP_Text aSecondaryTrigger;
     public TMP_Text aMessage;
     public Action mCallbackSuccess;
+    public Action mCallbackSecondarySuccess;
     public GameObject aAudioPaused;
     public GameObject aAudioPlay;
 
 
-    public void InitController(string pMessage, Action pCallbackSuccess = null, string pHeader = "Success", string pTrigger = "Proceed", string pSecondaryTrigger = "Dismiss")
+    public void InitController(string pMessage, Action pCallbackSuccess = null, Action pCallbackSecondarySuccess = null, string pHeader = "Success", string pTrigger = "Proceed", string pSecondaryTrigger = "Dismiss")
     {
         aHeader.text = pHeader;
         aTrigger.text = pTrigger;
         aMessage.text = pMessage;
         mCallbackSuccess = pCallbackSuccess;
+        mCallbackSecondarySuccess = pCallbackSecondarySuccess;
 
         if (aSecondaryTrigger != null)
         {
@@ -45,6 +47,10 @@ public class AlertMenuController : MonoBehaviour
 
     public void OnTriggerSecondary()
     {
+        if (mCallbackSecondarySuccess != null)
+        {
+            mCallbackSecondarySuccess.Invoke();
+        }
         GlobalAnimator.Instance.AnimateAlpha(gameObject, false);
     }
 

@@ -27,9 +27,8 @@ public class TrashDetector : MonoBehaviour
             {
                 MoveSplineRoot.CandyTrashed(_candy);
                 _candy.transform.DOMove(trashPoint.transform.position, 0.5f);
+                StaticAudioManager.Instance.playHammerSound();
             }
         }
-        
-
     }
 }

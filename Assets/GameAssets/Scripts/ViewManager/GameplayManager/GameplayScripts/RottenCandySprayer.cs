@@ -22,5 +22,6 @@ public class RottenCandySprayer : MonoBehaviour
             _candy.MColorCode = ColorCode.Roten;
 
         }
+        StaticAudioManager.Instance.playSpraySound();
     }
 }

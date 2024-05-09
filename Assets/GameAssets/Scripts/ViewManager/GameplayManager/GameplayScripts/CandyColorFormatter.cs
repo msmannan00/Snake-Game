@@ -7,10 +7,6 @@ public class CandyColorFormatter : MonoBehaviour
 {
     public ColorCode MColorCode;
     public GameObject RefCandy;
-    // Start is called before the first frame update
-
-
-
 
     private void OnTriggerEnter(Collider other)
     {
@@ -21,7 +17,7 @@ public class CandyColorFormatter : MonoBehaviour
             _candy.MColorCode = MColorCode;
 
             GameUtils.SwapMaterialsAndMesh(_candy.gameObject, RefCandy);
-           
         }
+        StaticAudioManager.Instance.playWaterSound();
     }
 }
