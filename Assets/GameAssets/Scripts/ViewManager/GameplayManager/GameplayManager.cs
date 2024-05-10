@@ -22,6 +22,50 @@ public class GameplayManager : MonoBehaviour, PageController
     {
         userSessionManager.Instance.mIsCounterRunning = true;
         StartTimer();
+        onScreenLoad();
+    }
+
+    public void onScreenLoad()
+    {
+        GameObject gameplayObject = GameObject.Find("GameplayModel");
+        if (gameplayObject != null && gameplayObject.transform.parent != null)
+        {
+            Transform targetParent = gameplayObject.transform.parent;
+            while (targetParent.parent != null)
+            {
+                targetParent = targetParent.parent;
+            }
+            gameplayObject.transform.SetParent(targetParent, false);
+        }
+
+        GameObject backgroundObject = GameObject.Find("GameplayModelBackground");
+        if (backgroundObject != null)
+        {
+            backgroundObject.transform.SetParent(null);
+        }
+    }
+
+    private void OnDestroy()
+    {
+        GameObject gameplayObject = GameObject.Find("GameplayModelBackground");
+        if (gameplayObject != null)
+        {
+            Destroy(gameplayObject);
+        }
+
+        GameObject backgroundObject = GameObject.Find("GameplayModelBackground");
+        if (backgroundObject != null)
+        {
+            Destroy(backgroundObject);
+        }
+        if (GameObject.Find("gameMainCamera") != null)
+        {
+            mCamera = GameObject.Find("gameMainCamera").GetComponent<Camera>();
+            if (mCamera != null)
+            {
+                mCamera.enabled = true;
+            }
+        }
     }
 
     public void StartTimer()
@@ -177,17 +221,7 @@ public class GameplayManager : MonoBehaviour, PageController
         mCamera = GameObject.Find("gameMainCamera").GetComponent<Camera>();
     }
 
-    void OnDestroy()
-    {
-        if (GameObject.Find("gameMainCamera") != null)
-        {
-            mCamera = GameObject.Find("gameMainCamera").GetComponent<Camera>();
-            if (mCamera != null)
-            {
-                mCamera.enabled = true;
-            }
-        }
-    }
+
 
     void Update()
     {

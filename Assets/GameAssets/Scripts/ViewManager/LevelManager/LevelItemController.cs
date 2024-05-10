@@ -3,6 +3,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.Animations;
 using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
 
 public class LevelItemController : MonoBehaviour, IPointerClickHandler
 {
@@ -52,11 +53,9 @@ public class LevelItemController : MonoBehaviour, IPointerClickHandler
         else
         {
             userSessionManager.Instance.currentLevel = mItemLevel;
-            Dictionary<string, object> mData = new Dictionary<string, object>
-            {
-                { "currentLevel", mItemLevel}
-            };
-            StateManager.Instance.OpenStaticScreen("gameplay", mParent, "gameplayScreen", mData);
+            userSessionManager.Instance.mIsLevelRestart = true;
+            Scene currentScene = SceneManager.GetActiveScene();
+            SceneManager.LoadScene(currentScene.name);
         }
     }
 
