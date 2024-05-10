@@ -6,6 +6,7 @@ public class AppManager : MonoBehaviour
     private void Start()
     {
         Application.targetFrameRate = 60;
+        PlayerPrefs.DeleteAll();
         if (!PreferenceManager.Instance.GetBool("WelcomeScreensShown_v3"))
         {
             StateManager.Instance.OpenStaticScreen("welcome", null, "welcomeScreen", null);
