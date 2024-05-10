@@ -12,11 +12,16 @@ public class GameplayManager : MonoBehaviour, PageController
     public TMP_Text aCounterValue;
 
     public GameObject aTutorial;
+    public GameObject aBonusTimer;
+    public GameObject aBonusCompleted;
+    public TMP_Text aBonusTimerLabel;
     public TMP_Text aMessage;
 
     private bool isRunning;
     private Camera mCamera;
-    private int mCount = 1;
+    private float mCount = 1;
+    private bool mBonusLevel = false;
+    int mBonusTimerCounter = 0;
 
     public void onInit(Dictionary<string, object> data)
     {
@@ -119,7 +124,7 @@ public class GameplayManager : MonoBehaviour, PageController
     {
         while (isRunning)
         {
-            if (mCount < 4 && aCounterValue != null)
+            if ((mCount==1 || mCount == 2 || mCount == 3) && aCounterValue != null)
             {
                 StaticAudioManager.Instance.playbeepSound();
                 if (mCount == 0)
@@ -178,9 +183,34 @@ public class GameplayManager : MonoBehaviour, PageController
                     ShowAndHideTutorial();
                 }
             }
-            mCount += 1;
-            yield return new WaitForSeconds(1);
+            if (userSessionManager.Instance.mIsBonusLevelStarted && !mBonusLevel)
+            {
+                mBonusLevel = true;
+                aBonusTimer.SetActive(true);
+                mBonusTimerCounter = 30;
+            }
+            if (!userSessionManager.Instance.mIsBonusLevelStarted)
+            {
+                mCount += 1f;
+            }
+            else
+            {
+                mBonusTimerCounter--;
+                aBonusTimerLabel.SetText("00:"+ mBonusTimerCounter.ToString());
+                if(mBonusTimerCounter == 0)
+                {
+                    aBonusCompleted.SetActive(true);
+                }
+            }
+            yield return new WaitForSeconds(1f);
         }
+    }
+
+    public void onBonusCompleted()
+    {
+        userSessionManager.Instance.mIsBonusLevelStarted = false;
+        aBonusCompleted.SetActive(false);
+        aBonusTimer.SetActive(false);
     }
 
     public void onOpenMenu()

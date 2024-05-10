@@ -52,6 +52,7 @@ public class MoveSpiralRoot : MonoBehaviour
             {
                 PlayerPrefs.SetInt("current_level", mCurrentLevel + 1);
             }
+            userSessionManager.Instance.currentLevel = userSessionManager.Instance.currentLevel + 1;
             GameObject mGameplayScreen = gameObject;
             allObjects = FindObjectsOfType<GameObject>();
             foreach (var gameObject in allObjects)
@@ -68,6 +69,7 @@ public class MoveSpiralRoot : MonoBehaviour
         };
         Action callbackSuccessSecondary = () =>
         {
+            userSessionManager.Instance.mIsLevelRestart = false;
             GameObject[] allObjects = FindObjectsOfType<GameObject>();
             foreach (var gameObject in allObjects)
             {
@@ -91,7 +93,9 @@ public class MoveSpiralRoot : MonoBehaviour
                     GameplayManager manager = gameObject.GetComponent<GameplayManager>();
                     if (manager != null)
                     {
-                        manager.onRestartLevel();
+                        gameObject.transform.parent.SetSiblingIndex(1);
+                        Dictionary<string, object> mData = new Dictionary<string, object> { };
+                        StateManager.Instance.OpenStaticScreen("level", gameObject, "levelScreen", null);
                     }
                 }
             }
@@ -118,7 +122,7 @@ public class MoveSpiralRoot : MonoBehaviour
 
     void Update()
     {
-        if (!userSessionManager.Instance.mIsCounterRunning && !userSessionManager.Instance.mIsMenuOpened)
+        if (!userSessionManager.Instance.mIsCounterRunning && !userSessionManager.Instance.mIsMenuOpened && !userSessionManager.Instance.mIsBonusLevelStarted)
         {
             if (StackedCandies.Count == 0)
             {

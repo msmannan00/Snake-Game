@@ -2500,6 +2500,8 @@ GameObject:
   - component: {fileID: 6277445310062412217}
   - component: {fileID: 8744775153823064082}
   - component: {fileID: 5376192131989719119}
+  - component: {fileID: 8596965017237042717}
+  - component: {fileID: 6356872105973352430}
   m_Layer: 0
   m_Name: Circle.002
   m_TagString: Untagged
@@ -2573,6 +2575,34 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &8596965017237042717
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4398147246491393022}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.26358518, y: 0.24022594, z: 0.14392936}
+  m_Center: {x: -0.000030577183, y: 0.020546209, z: 0.028045159}
+--- !u!114 &6356872105973352430
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4398147246491393022}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 984b880021f2d9646923a552104bf2c6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  RefCandy: {fileID: 0}
+  MColorCode: 0
+  CanMakeCandyRot: 0
 --- !u!1 &4450442545087725909
 GameObject:
   m_ObjectHideFlags: 0

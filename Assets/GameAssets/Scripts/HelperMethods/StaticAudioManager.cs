@@ -38,6 +38,11 @@ public class StaticAudioManager : GenericSingletonClass<StaticAudioManager>
         AudioClip clip = Resources.Load<AudioClip>("SoundAssets/spray");
         AudioSource.PlayClipAtPoint(clip, Camera.main.transform.position);
     }
+    public void playBonusSound()
+    {
+        AudioClip clip = Resources.Load<AudioClip>("SoundAssets/bonus");
+        AudioSource.PlayClipAtPoint(clip, Camera.main.transform.position);
+    }
     public void playHammerSound()
     {
         AudioClip clip = Resources.Load<AudioClip>("SoundAssets/hammer");
