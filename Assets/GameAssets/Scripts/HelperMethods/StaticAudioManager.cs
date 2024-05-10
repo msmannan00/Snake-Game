@@ -6,85 +6,51 @@ public class StaticAudioManager : GenericSingletonClass<StaticAudioManager>
     public void playEatingSound()
     {
         AudioClip clip = Resources.Load<AudioClip>("SoundAssets/eating_sound");
-        if (clip != null)
-        {
-            AudioSource.PlayClipAtPoint(clip, Camera.main.transform.position);
-        }
-        else
-        {
-            Debug.LogError("Audio clip not found!");
-        }
+        AudioSource.PlayClipAtPoint(clip, Camera.main.transform.position);
     }
     public void playWaterSound()
     {
         AudioClip clip = Resources.Load<AudioClip>("SoundAssets/water-splash");
-        if (clip != null)
-        {
-            AudioSource.PlayClipAtPoint(clip, Camera.main.transform.position);
-        }
-        else
-        {
-            Debug.LogError("Audio clip not found!");
-        }
+        AudioSource.PlayClipAtPoint(clip, Camera.main.transform.position);
+    }
+    public void playButtonSound()
+    {
+        AudioClip clip = Resources.Load<AudioClip>("SoundAssets/button");
+        AudioSource.PlayClipAtPoint(clip, Camera.main.transform.position);
+    }
+    public void playGoSound()
+    {
+        AudioClip clip = Resources.Load<AudioClip>("SoundAssets/go");
+        AudioSource.PlayClipAtPoint(clip, Camera.main.transform.position);
+    }
+    public void playbeepSound()
+    {
+        AudioClip clip = Resources.Load<AudioClip>("SoundAssets/beep");
+        AudioSource.PlayClipAtPoint(clip, Camera.main.transform.position);
     }
     public void playPaperSound()
     {
         AudioClip clip = Resources.Load<AudioClip>("SoundAssets/paper");
-        if (clip != null)
-        {
-            AudioSource.PlayClipAtPoint(clip, Camera.main.transform.position);
-        }
-        else
-        {
-            Debug.LogError("Audio clip not found!");
-        }
+        AudioSource.PlayClipAtPoint(clip, Camera.main.transform.position);
     }
     public void playSpraySound()
     {
         AudioClip clip = Resources.Load<AudioClip>("SoundAssets/spray");
-        if (clip != null)
-        {
-            AudioSource.PlayClipAtPoint(clip, Camera.main.transform.position);
-        }
-        else
-        {
-            Debug.LogError("Audio clip not found!");
-        }
+        AudioSource.PlayClipAtPoint(clip, Camera.main.transform.position);
     }
     public void playHammerSound()
     {
         AudioClip clip = Resources.Load<AudioClip>("SoundAssets/hammer");
-        if (clip != null)
-        {
-            AudioSource.PlayClipAtPoint(clip, Camera.main.transform.position);
-        }
-        else
-        {
-            Debug.LogError("Audio clip not found!");
-        }
+        AudioSource.PlayClipAtPoint(clip, Camera.main.transform.position);
     }
     public void playPackingSound()
     {
         AudioClip clip = Resources.Load<AudioClip>("SoundAssets/packing");
-        if (clip != null)
-        {
-            AudioSource.PlayClipAtPoint(clip, Camera.main.transform.position);
-        }
-        else
-        {
-            Debug.LogError("Audio clip not found!");
-        }
+        AudioSource.PlayClipAtPoint(clip, Camera.main.transform.position);
     }
     public void playDropSound()
     {
         AudioClip clip = Resources.Load<AudioClip>("SoundAssets/drop");
-        if (clip != null)
-        {
-            AudioSource.PlayClipAtPoint(clip, Camera.main.transform.position);
-        }
-        else
-        {
-            Debug.LogError("Audio clip not found!");
-        }
+        AudioSource.PlayClipAtPoint(clip, Camera.main.transform.position);
     }
 }

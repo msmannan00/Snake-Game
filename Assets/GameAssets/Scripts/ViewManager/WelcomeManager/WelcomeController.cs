@@ -1,70 +1,43 @@
 using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
-using UnityEngine.UI; // Import for the Image component
+using DG.Tweening;
+using TMPro;
+using UnityEngine.UI;
 
 public class WelcomeController : MonoBehaviour, PageController
 {
-    private int mPageNumber = 0;
-    public GameObject mPage;
-    public GameObject mFood;
-    public TMP_Text mTitle;
-    public TMP_Text mDescription;
-
-    private string[] mPointerImage = { "pagePointer1", "pagePointer2", "pagePointer3" };
-    private string[] mFoodImage = { "welcome1", "welcome2", "welcome3" };
-    private string[] mTitleList = { "Endless Runner", "Watch the Obstacles", "Exciting Levels" };
-    private string[] mDescriptionList = {
-        "Explore the vibrant candy universe of the endless runner adventure",
-        "Beware of the myriad obstacles lurking around every corner",
-        "Embark on thrilling levels filled with excitement and challenge"
-    };
+    public TMP_Text aProgress;
+    public TMP_Text aProgressShadow;
+    public GameObject aProgressPanel;
 
     public void onInit(Dictionary<string, object> pData)
     {
-        if (pData != null)
-        {
-            mPageNumber = (int)pData[WelcomeKeys.sPageNumber];
-            mTitle.text = mTitleList[mPageNumber];
-            mDescription.text = mDescriptionList[mPageNumber];
-
-            Sprite pagePointer = Resources.Load<Sprite>("UIAssets/Welcome/Images/" + mPointerImage[mPageNumber]);
-            mPage.GetComponent<Image>().sprite = pagePointer;
-
-            Sprite foodImage = Resources.Load<Sprite>("UIAssets/Welcome/Images/" + mFoodImage[mPageNumber]);
-            mFood.GetComponent<Image>().sprite = foodImage;
-        }
+        int mCurrentLevel = PlayerPrefs.GetInt("current_level", 1);
+        aProgress.SetText((Mathf.CeilToInt((mCurrentLevel / 30f) * 100)).ToString()+" %");
+        aProgressShadow.SetText((Mathf.CeilToInt((mCurrentLevel / 30f) * 100)).ToString() + " %");
     }
 
-    public void getStarted()
+    public void onPlay()
     {
-        if (mPageNumber == 2)
+        Image panelImage = aProgressPanel.GetComponent<Image>();
+        panelImage.color = new Color(panelImage.color.r, panelImage.color.g, panelImage.color.b, 0);
+        aProgressPanel.SetActive(true);
+
+        panelImage.DOFade(1, 0.5f).OnComplete(() =>
         {
-            PreferenceManager.Instance.SetBool("WelcomeScreensShown_v3", true);
-            Dictionary<string, object> mData = new Dictionary<string, object>
+            DOVirtual.DelayedCall(1.0f, () =>
             {
-                { AuthKey.sAuthType, AuthConstant.sAuthTypeLogin}
-            };
-            StateManager.Instance.OpenStaticScreen("auth", gameObject, "authScreen", mData);
-        }
-        else
-        {
-            Dictionary<string, object> mData = new Dictionary<string, object>
-            {
-                { WelcomeKeys.sPageNumber, mPageNumber + 1 }
-            };
-            StateManager.Instance.OpenStaticScreen("welcome", gameObject, "welcomeScreen", mData);
-        }
+                gameObject.transform.parent.SetSiblingIndex(1);
+                Dictionary<string, object> mData = new Dictionary<string, object>();
+                StateManager.Instance.OpenStaticScreen("gameplay", gameObject, "gameplayScreen", null);
+            });
+        });
     }
 
-    public void OnLogin()
+    public void onLevel()
     {
-        PreferenceManager.Instance.SetBool("WelcomeScreensShown_v3", true);
-        Dictionary<string, object> mData = new Dictionary<string, object>
-            {
-                { AuthKey.sAuthType, AuthConstant.sAuthTypeLogin}
-            };
-        StateManager.Instance.OpenStaticScreen("auth", gameObject, "authScreen", mData);
+        gameObject.transform.parent.SetSiblingIndex(1);
+        Dictionary<string, object> mData = new Dictionary<string, object>();
+        StateManager.Instance.OpenStaticScreen("level", gameObject, "levelScreen", null);
     }
-
 }

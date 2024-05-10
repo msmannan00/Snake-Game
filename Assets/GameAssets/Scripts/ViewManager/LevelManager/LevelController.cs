@@ -28,6 +28,13 @@ public class LevelController : MonoBehaviour, PageController
         }
     }
 
+    public void onGoBack()
+    {
+        gameObject.transform.parent.SetSiblingIndex(1);
+        Application.targetFrameRate = 60;
+        StateManager.Instance.OpenStaticScreen("welcome", gameObject, "welcomeScreen", null);
+    }
+
     void UpdateCellSize()
     {
         //int size = gridLayoutGroup.cellSize.y;

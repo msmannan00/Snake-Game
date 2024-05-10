@@ -1,26 +1,141 @@
+using DG.Tweening;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
 public class GameplayManager : MonoBehaviour, PageController
 {
-    public TMP_Text aLevel;
+    public GameObject aCounter;
+    public TMP_Text aCounterValue;
+
+    public GameObject aTutorial;
+    public TMP_Text aMessage;
+
+    private bool isRunning;
     private Camera mCamera;
+    private int mCount = 1;
 
     public void onInit(Dictionary<string, object> data)
     {
-        int mCurrentLevel = PlayerPrefs.GetInt("current_level", 1);
-        aLevel.SetText("Level " + mCurrentLevel.ToString());
+        userSessionManager.Instance.mIsCounterRunning = true;
+        StartTimer();
     }
 
-    public void onLogout()
+    public void StartTimer()
     {
-        Dictionary<string, object> mData = new Dictionary<string, object>
+        if (!isRunning)
+        {
+            isRunning = true;
+            StaticAudioManager.Instance.playButtonSound();
+            StartCoroutine(RunEverySecond());
+        }
+    }
+
+    public void ShowAndHideTutorial()
+    {
+        CanvasGroup canvasGroup = aTutorial.GetComponent<CanvasGroup>();
+        if (canvasGroup == null)
+        {
+            canvasGroup = aTutorial.AddComponent<CanvasGroup>();
+        }
+
+        aTutorial.SetActive(true);
+        canvasGroup.alpha = 0;
+
+        canvasGroup.DOFade(1, 1.0f).OnComplete(() =>
+        {
+            DOVirtual.DelayedCall(1.0f, () =>
             {
-                { AuthKey.sAuthType, AuthConstant.sAuthTypeLogin}
-            };
-        StateManager.Instance.OpenStaticScreen("auth", gameObject, "authScreen", mData);
+                canvasGroup.DOFade(0, 1.0f).OnComplete(() =>
+                {
+                    aTutorial.SetActive(false);
+                });
+            });
+        });
+    }
+
+    public void onDisableCounter()
+    {
+        CanvasGroup canvasGroup = aCounter.GetComponent<CanvasGroup>();
+        if (canvasGroup == null)
+        {
+            canvasGroup = aCounter.AddComponent<CanvasGroup>();
+        }
+        canvasGroup.DOFade(0, 0.5f).OnComplete(() =>
+        {
+            aCounter.SetActive(false);
+            userSessionManager.Instance.mIsCounterRunning = false;
+        });
+    }
+
+    private IEnumerator RunEverySecond()
+    {
+        while (isRunning)
+        {
+            if (mCount < 4 && aCounterValue != null)
+            {
+                StaticAudioManager.Instance.playbeepSound();
+                if (mCount == 0)
+                {
+                    aCounterValue.text = (1).ToString();
+                }
+                else
+                {
+                    aCounterValue.text = (mCount).ToString();
+                }
+            }
+            if (mCount == 4)
+            {
+                StaticAudioManager.Instance.playGoSound();
+                aCounterValue.text = "GO";
+            }
+            if (mCount == 5)
+            {
+                onDisableCounter();
+            }
+            if (userSessionManager.Instance.currentLevel == 0)
+            {
+                if (mCount == 5)
+                {
+                    aMessage.SetText("Drag your finger on first\r\ncandy and move in right\r\ndirection!");
+                    ShowAndHideTutorial();
+                }
+                if (mCount == 9)
+                {
+                    aMessage.SetText("Be aware of sugar free \r\npoison! It would destroy\r\ncandy :(");
+                    ShowAndHideTutorial();
+                }
+                if (mCount == 16)
+                {
+                    aMessage.SetText("Be aware of pepper! It \r\nmakes your candy not \r\neatable :(");
+                    ShowAndHideTutorial();
+                }
+                if (mCount == 23)
+                {
+                    aMessage.SetText("Be aware of cooking hum-\r\nmer!  It will destroy your\r\ncandies :( ");
+                    ShowAndHideTutorial();
+                }
+                if (mCount == 27)
+                {
+                    aMessage.SetText("Magic portal will transfer\r\nyou to additional level! ");
+                    ShowAndHideTutorial();
+                }
+                if (mCount == 30)
+                {
+                    aMessage.SetText("Your main purpose make\r\ncombinations of 3x simi-\r\nlar candies for 30 sec. ");
+                    ShowAndHideTutorial();
+                }
+                if (mCount == 38)
+                {
+                    aMessage.SetText("Not eatable candy will\r\ngo in trash bin :(");
+                    ShowAndHideTutorial();
+                }
+            }
+            mCount += 1;
+            yield return new WaitForSeconds(1);
+        }
     }
 
     public void onOpenMenu()
@@ -47,22 +162,7 @@ public class GameplayManager : MonoBehaviour, PageController
         GlobalAnimator.Instance.AnimateAlpha(instantiatedAlert, true);
     }
 
-    public void onLevelFailed()
-    {
-        Action callbackSuccess = () =>
-        {
-            gameObject.transform.parent.SetSiblingIndex(1);
-            Dictionary<string, object> mData = new Dictionary<string, object> { };
-            StateManager.Instance.OpenStaticScreen("gameplay", gameObject, "gameplayScreen", null);
-        };
-        GameObject alertPrefab = Resources.Load<GameObject>("Prefabs/alerts/alertFinishedFailed");
-        GameObject alertsContainer = GameObject.FindGameObjectWithTag("alerts");
-        GameObject instantiatedAlert = Instantiate(alertPrefab, alertsContainer.transform);
-        AlertController alertController = instantiatedAlert.GetComponent<AlertController>();
-        alertController.InitController("Oh no, You have failed this level. lets see you can do it again", callbackSuccess, pTrigger: "Restart", pHeader: "Level Failed");
-        GlobalAnimator.Instance.AnimateAlpha(instantiatedAlert, true);
-    }
-
+   
     public void onRestartLevel()
     {
         gameObject.transform.parent.SetSiblingIndex(1);
@@ -70,23 +170,7 @@ public class GameplayManager : MonoBehaviour, PageController
         StateManager.Instance.OpenStaticScreen("level", gameObject, "levelScreen", null);
     }
 
-    public void onNextLevel()
-    {
-        Action callbackSuccess = () =>
-        {
-            gameObject.transform.parent.SetSiblingIndex(1);
-            Dictionary<string, object> mData = new Dictionary<string, object> { };
-            StateManager.Instance.OpenStaticScreen("gameplay", gameObject, "gameplayScreen", null);
-        };
-
-        GameObject alertPrefab = Resources.Load<GameObject>("Prefabs/alerts/alertFinishedSuccess");
-        GameObject alertsContainer = GameObject.FindGameObjectWithTag("alerts");
-        GameObject instantiatedAlert = Instantiate(alertPrefab, alertsContainer.transform);
-        AlertController alertController = instantiatedAlert.GetComponent<AlertController>();
-        alertController.InitController("Awesome, You have finished this level. lets see you can keep your streak", callbackSuccess, pTrigger: "Next Level", pHeader: "Level Complete");
-        GlobalAnimator.Instance.AnimateAlpha(instantiatedAlert, true);
-    }
-
+   
     void Start()
     {
         mCamera = GameObject.Find("gameMainCamera").GetComponent<Camera>();

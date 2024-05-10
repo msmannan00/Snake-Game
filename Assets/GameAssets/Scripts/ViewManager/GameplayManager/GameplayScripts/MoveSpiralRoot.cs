@@ -88,19 +88,22 @@ public class MoveSpiralRoot : MonoBehaviour
 
     void Update()
     {
-        if (StackedCandies.Count == 0)
+        if (!userSessionManager.Instance.mIsCounterRunning)
         {
-            if (!isGameEnd)
+            if (StackedCandies.Count == 0)
             {
-                onNextLevel();
+                if (!isGameEnd)
+                {
+                    onNextLevel();
+                }
+                isGameEnd = true;
+                return;
             }
-            isGameEnd = true;
-            return;
-        }
 
-        currentQueueLength =  StackedCandies.Count;
-        transform.localPosition -= Vector3.forward * Time.deltaTime * moveSpeed;
-        UpdateHead();
+            currentQueueLength = StackedCandies.Count;
+            transform.localPosition -= Vector3.forward * Time.deltaTime * moveSpeed;
+            UpdateHead();
+        }
     }
 
 

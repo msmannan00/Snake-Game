@@ -6,6 +6,7 @@ public class userSessionManager : GenericSingletonClass<userSessionManager>
     public int totalLevel = 30;
     public int currentLevel = 30;
     public bool isAudioPlaying = true;
+    public bool mIsCounterRunning = false;
 
     public void OnInitialize(string pProfileUsername, string pProfileID)
     {
