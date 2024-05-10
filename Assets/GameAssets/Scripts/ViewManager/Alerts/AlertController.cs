@@ -4,24 +4,17 @@ using UnityEngine;
 
 public class AlertController : MonoBehaviour
 {
-    public TMP_Text aHeader;
     public TMP_Text aTrigger;
     public TMP_Text aSecondaryTrigger;
-    public TMP_Text aMessage;
     public Action mCallbackSuccess;
+    public Action mCallbackSuccessSecondary;
 
 
-    public void InitController(string pMessage, Action pCallbackSuccess = null, string pHeader = "Success", string pTrigger = "Proceed", string pSecondaryTrigger = "Dismiss")
+    public void InitController(string pMessage, Action pCallbackSuccessSecondary = null, Action pCallbackSuccess = null, string pHeader = "Success", string pTrigger = "Proceed", string pSecondaryTrigger = "Dismiss")
     {
-        aHeader.text = pHeader;
-        aTrigger.text = pTrigger;
-        aMessage.text = pMessage;
+        mCallbackSuccessSecondary = pCallbackSuccessSecondary;
         mCallbackSuccess = pCallbackSuccess;
 
-        if (aSecondaryTrigger != null)
-        {
-            aSecondaryTrigger.text = pSecondaryTrigger;
-        }
     }
 
     public void OnTriggerPrimary()
@@ -36,6 +29,7 @@ public class AlertController : MonoBehaviour
     public void OnTriggerSecondary()
     {
         GlobalAnimator.Instance.AnimateAlpha(gameObject, false);
+        mCallbackSuccessSecondary.Invoke();
     }
 
     public void OnClose()

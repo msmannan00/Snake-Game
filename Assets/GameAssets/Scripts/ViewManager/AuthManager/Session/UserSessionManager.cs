@@ -7,6 +7,8 @@ public class userSessionManager : GenericSingletonClass<userSessionManager>
     public int currentLevel = 30;
     public bool isAudioPlaying = true;
     public bool mIsCounterRunning = false;
+    public bool mIsLevelRestart = false;
+    public bool mIsMenuOpened = false;
 
     public void OnInitialize(string pProfileUsername, string pProfileID)
     {

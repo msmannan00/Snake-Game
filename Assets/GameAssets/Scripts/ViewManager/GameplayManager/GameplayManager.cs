@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameplayManager : MonoBehaviour, PageController
 {
@@ -95,7 +96,7 @@ public class GameplayManager : MonoBehaviour, PageController
             {
                 onDisableCounter();
             }
-            if (userSessionManager.Instance.currentLevel == 0)
+            if (userSessionManager.Instance.currentLevel < 1)
             {
                 if (mCount == 5)
                 {
@@ -142,9 +143,9 @@ public class GameplayManager : MonoBehaviour, PageController
     {
         Action callbackSuccess = () =>
         {
-            gameObject.transform.parent.SetSiblingIndex(1);
-            Dictionary<string, object> mData = new Dictionary<string, object> { };
-            StateManager.Instance.OpenStaticScreen("level", gameObject, "levelScreen", null);
+            userSessionManager.Instance.mIsLevelRestart = true;
+            Scene currentScene = SceneManager.GetActiveScene();
+            SceneManager.LoadScene(currentScene.name);
         };
 
         Action callbackLevel = () =>
@@ -158,19 +159,19 @@ public class GameplayManager : MonoBehaviour, PageController
         GameObject alertsContainer = GameObject.FindGameObjectWithTag("alerts");
         GameObject instantiatedAlert = Instantiate(alertPrefab, alertsContainer.transform);
         AlertMenuController alertController = instantiatedAlert.GetComponent<AlertMenuController>();
-        alertController.InitController("Your Game Session is paused", callbackSuccess, callbackLevel, pTrigger: "Restart", pHeader:"Game Paused", pSecondaryTrigger : "Level Menu");
+        alertController.InitController("Your Game Session is paused", callbackLevel, callbackSuccess, pTrigger: "Restart", pHeader:"Game Paused", pSecondaryTrigger : "Level Menu");
         GlobalAnimator.Instance.AnimateAlpha(instantiatedAlert, true);
     }
 
    
     public void onRestartLevel()
     {
-        gameObject.transform.parent.SetSiblingIndex(1);
-        Dictionary<string, object> mData = new Dictionary<string, object> { };
-        StateManager.Instance.OpenStaticScreen("level", gameObject, "levelScreen", null);
+        userSessionManager.Instance.mIsLevelRestart = true;
+        Scene currentScene = SceneManager.GetActiveScene();
+        SceneManager.LoadScene(currentScene.name);
     }
 
-   
+
     void Start()
     {
         mCamera = GameObject.Find("gameMainCamera").GetComponent<Camera>();

@@ -52,7 +52,7 @@ public class CanMovController : MonoBehaviour
         if (isMousePressed)
         {
 
-            if (FocusedObj)
+            if (FocusedObj && !userSessionManager.Instance.mIsMenuOpened)
             {
                 Debug.LogError("trying to move object");
                 FocusedObj.transform.localPosition = Vector3.Lerp(FocusedObj.transform.localPosition,

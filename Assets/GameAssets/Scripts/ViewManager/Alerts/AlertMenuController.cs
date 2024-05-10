@@ -16,9 +16,7 @@ public class AlertMenuController : MonoBehaviour
 
     public void InitController(string pMessage, Action pCallbackSuccess = null, Action pCallbackSecondarySuccess = null, string pHeader = "Success", string pTrigger = "Proceed", string pSecondaryTrigger = "Dismiss")
     {
-        aHeader.text = pHeader;
-        aTrigger.text = pTrigger;
-        aMessage.text = pMessage;
+        userSessionManager.Instance.mIsMenuOpened = true;
         mCallbackSuccess = pCallbackSuccess;
         mCallbackSecondarySuccess = pCallbackSecondarySuccess;
 
@@ -43,6 +41,7 @@ public class AlertMenuController : MonoBehaviour
             mCallbackSuccess.Invoke();
         }
         GlobalAnimator.Instance.AnimateAlpha(gameObject, false);
+        userSessionManager.Instance.mIsMenuOpened = false;
     }
 
     public void OnTriggerSecondary()
@@ -52,10 +51,12 @@ public class AlertMenuController : MonoBehaviour
             mCallbackSecondarySuccess.Invoke();
         }
         GlobalAnimator.Instance.AnimateAlpha(gameObject, false);
+        userSessionManager.Instance.mIsMenuOpened = false;
     }
 
     public void OnClose()
     {
         GlobalAnimator.Instance.AnimateAlpha(gameObject, false);
+        userSessionManager.Instance.mIsMenuOpened = false;
     }
 }

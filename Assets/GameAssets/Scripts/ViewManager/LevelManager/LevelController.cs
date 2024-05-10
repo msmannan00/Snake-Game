@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -15,6 +16,8 @@ public class LevelController : MonoBehaviour, PageController
         UpdateCellSize();
         onInitScroll();
     }
+
+
 
     void onInitScroll()
     {

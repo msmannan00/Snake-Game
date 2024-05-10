@@ -19,6 +19,7 @@ public class MoveSpiralRoot : MonoBehaviour
     int maxSimilarityCount = 0;
     bool mSimilarityCounted = false;
 
+
     private void Awake()
     {
         if(Instance == null)
@@ -65,14 +66,43 @@ public class MoveSpiralRoot : MonoBehaviour
                 }
             }
         };
+        Action callbackSuccessSecondary = () =>
+        {
+            GameObject[] allObjects = FindObjectsOfType<GameObject>();
+            foreach (var gameObject in allObjects)
+            {
+                if (gameObject.name.Contains("Candy"))
+                {
+                    Destroy(gameObject);
+                }
+            }
 
+            int mCurrentLevel = PlayerPrefs.GetInt("current_level", 1);
+            if ((userSessionManager.Instance.currentLevel + 1) >= mCurrentLevel && maxSimilarityCount > 2)
+            {
+                PlayerPrefs.SetInt("current_level", mCurrentLevel + 1);
+            }
+            GameObject mGameplayScreen = gameObject;
+            allObjects = FindObjectsOfType<GameObject>();
+            foreach (var gameObject in allObjects)
+            {
+                if (gameObject.name == "gameplayScreen(Clone)")
+                {
+                    GameplayManager manager = gameObject.GetComponent<GameplayManager>();
+                    if (manager != null)
+                    {
+                        manager.onRestartLevel();
+                    }
+                }
+            }
+        };
         if (maxSimilarityCount > 2)
         {
             GameObject alertPrefab = Resources.Load<GameObject>("Prefabs/alerts/alertFinishedSuccess");
             GameObject alertsContainer = GameObject.FindGameObjectWithTag("alerts");
             GameObject instantiatedAlert = Instantiate(alertPrefab, alertsContainer.transform);
             AlertController alertController = instantiatedAlert.GetComponent<AlertController>();
-            alertController.InitController("Awesome, You have finished this level. lets see you can keep your streak", callbackSuccess, pTrigger: "Next Level", pHeader: "Level Complete");
+            alertController.InitController("Awesome, You have finished this level. lets see you can keep your streak", callbackSuccessSecondary, callbackSuccess, pTrigger: "Next Level", pHeader: "Level Complete");
             GlobalAnimator.Instance.AnimateAlpha(instantiatedAlert, true);
         }
         else
@@ -81,14 +111,14 @@ public class MoveSpiralRoot : MonoBehaviour
             GameObject alertsContainer = GameObject.FindGameObjectWithTag("alerts");
             GameObject instantiatedAlert = Instantiate(alertPrefab, alertsContainer.transform);
             AlertController alertController = instantiatedAlert.GetComponent<AlertController>();
-            alertController.InitController("Oh no, You have failed this level. lets see you can do it again", callbackSuccess, pTrigger: "Restart", pHeader: "Level Failed");
+            alertController.InitController("Oh no, You have failed this level. lets see you can do it again", callbackSuccessSecondary, callbackSuccess, pTrigger: "Restart", pHeader: "Level Failed");
             GlobalAnimator.Instance.AnimateAlpha(instantiatedAlert, true);
         }
     }
 
     void Update()
     {
-        if (!userSessionManager.Instance.mIsCounterRunning)
+        if (!userSessionManager.Instance.mIsCounterRunning && !userSessionManager.Instance.mIsMenuOpened)
         {
             if (StackedCandies.Count == 0)
             {

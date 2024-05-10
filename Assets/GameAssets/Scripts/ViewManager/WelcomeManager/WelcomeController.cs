@@ -12,13 +12,15 @@ public class WelcomeController : MonoBehaviour, PageController
 
     public void onInit(Dictionary<string, object> pData)
     {
-        int mCurrentLevel = PlayerPrefs.GetInt("current_level", 1);
-        aProgress.SetText((Mathf.CeilToInt((mCurrentLevel / 30f) * 100)).ToString()+" %");
-        aProgressShadow.SetText((Mathf.CeilToInt((mCurrentLevel / 30f) * 100)).ToString() + " %");
+        int mCurrentLevel = PlayerPrefs.GetInt("current_level", 1)-1;
+        aProgress.SetText((Mathf.CeilToInt((mCurrentLevel / 30f) * 100)).ToString()+"%");
+        aProgressShadow.SetText((Mathf.CeilToInt((mCurrentLevel / 30f) * 100)).ToString() + "%");
     }
 
     public void onPlay()
     {
+        int mCurrentLevel = PlayerPrefs.GetInt("current_level", 1);
+        userSessionManager.Instance.currentLevel = mCurrentLevel;
         Image panelImage = aProgressPanel.GetComponent<Image>();
         panelImage.color = new Color(panelImage.color.r, panelImage.color.g, panelImage.color.b, 0);
         aProgressPanel.SetActive(true);

@@ -2,8 +2,9 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Animations;
+using UnityEngine.EventSystems;
 
-public class LevelItemController : MonoBehaviour
+public class LevelItemController : MonoBehaviour, IPointerClickHandler
 {
     public TMP_Text aLevel;
     public GameObject aLock;
@@ -35,6 +36,11 @@ public class LevelItemController : MonoBehaviour
         {
             aLevel.SetText((pItemLevel+1).ToString());
         }
+    }
+
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        onClick();
     }
 
     public void onClick()
