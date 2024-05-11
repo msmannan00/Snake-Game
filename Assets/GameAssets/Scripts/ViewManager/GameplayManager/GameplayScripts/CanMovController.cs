@@ -93,8 +93,8 @@ public class CanMovController : MonoBehaviour
             {
                 Debug.LogError("trying to move : "+ FocusedObj.name);
                 FocusedObj.transform.position = Vector3.Lerp(FocusedObj.transform.position,
-                    new Vector3(currentFocusedPoint.x, 
-                    FocusedObj.transform.position.y, MoveSpiralController.BaseTransform.position.z -( MoveSpiralController.CandyGap * (MoveSpiralController.StackedCandies.Count -1)))
+                    new Vector3(currentFocusedPoint.x,
+                    MoveSpiralController.BaseTransform.position.y, MoveSpiralController.BaseTransform.position.z -( MoveSpiralController.CandyGap * (MoveSpiralController.StackedCandies.Count -1)))
                     , Time.deltaTime * followSpeed);
             }
         }

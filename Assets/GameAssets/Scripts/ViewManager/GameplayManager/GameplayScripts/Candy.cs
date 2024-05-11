@@ -37,7 +37,7 @@ public class Candy : MonoBehaviour
         if (HasAlreadyStacked && !IsBaseCandy && FollowLead)
         {
             transform.position = Vector3.Lerp(transform.position, 
-                new Vector3(FollowLead.transform.position.x, FollowLead.transform.position.y, FollowLead.transform.position.z + SpiralRootController.CandyGap),Time.deltaTime * CandyFollowSpeed);
+                new Vector3(FollowLead.transform.position.x, SpiralRootController.BaseTransform.position.y, FollowLead.transform.position.z + SpiralRootController.CandyGap),Time.deltaTime * CandyFollowSpeed);
         }
        
        

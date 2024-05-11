@@ -156,7 +156,6 @@ public class minigame : MonoBehaviour
         });
 
         // Play sound effect
-        StaticAudioManager.Instance.playBonusSound();
     }
 
     void CheckForMatchesAndReplace(int x, int y)
@@ -188,6 +187,7 @@ public class minigame : MonoBehaviour
             for (int j = y - upCount; j <= y + downCount; j++)
             {
                 ChangeCandySpriteWithAnimation(candies[x, j]);
+                StaticAudioManager.Instance.playBonusSound();
             }
         }
     }

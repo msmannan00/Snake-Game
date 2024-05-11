@@ -18,13 +18,12 @@ public class MoveSpiralRoot : MonoBehaviour
     bool isGameEnd = false;
     int maxSimilarityCount = 0;
     bool mSimilarityCounted = false;
-
-
+    public float CandyGap = 0.05f;
     private void Awake()
     {
-        if(Instance == null)
-              Instance = this;
-        
+        if (Instance == null)
+            Instance = this;
+
     }
     // Start is called before the first frame update
     void Start()
@@ -32,7 +31,6 @@ public class MoveSpiralRoot : MonoBehaviour
         baseCandy.HasAlreadyStacked = true;
         StackedCandies.Add(baseCandy);
     }
-
 
     public void onNextLevel()
     {
@@ -48,7 +46,7 @@ public class MoveSpiralRoot : MonoBehaviour
             }
 
             int mCurrentLevel = PlayerPrefs.GetInt("current_level", 1);
-            if((userSessionManager.Instance.currentLevel+1) >= mCurrentLevel && maxSimilarityCount>2)
+            if ((userSessionManager.Instance.currentLevel + 1) >= mCurrentLevel && maxSimilarityCount > 2)
             {
                 PlayerPrefs.SetInt("current_level", mCurrentLevel + 1);
             }
@@ -135,9 +133,9 @@ public class MoveSpiralRoot : MonoBehaviour
             }
 
             currentQueueLength = StackedCandies.Count;
-            transform.localPosition -= Vector3.forward * Time.deltaTime * moveSpeed;
-            UpdateHead();
+            transform.localPosition += transform.forward * Time.deltaTime * moveSpeed;
         }
+        UpdateHead();
     }
 
 
@@ -160,14 +158,12 @@ public class MoveSpiralRoot : MonoBehaviour
         }
     }
 
-    void UpdateZLength()
-    {
-      
-    }
+
 
     public void RegisterNewCandy(Candy newCandy)
     {
-        if (StackedCandies == null && StackedCandies.Count >= QueueLenght) {
+        if (StackedCandies == null && StackedCandies.Count >= QueueLenght)
+        {
 
             Debug.LogError("Limit Reached");
             return;
@@ -178,7 +174,7 @@ public class MoveSpiralRoot : MonoBehaviour
         newCandy.TailCandy = baseCandy;
         baseCandy = newCandy;
         baseCandy.IsBaseCandy = true;
-        newCandy.transform.SetParent (this.transform);
+        newCandy.transform.SetParent(this.transform);
         StackedCandies.Add(newCandy);
     }
 
@@ -192,7 +188,7 @@ public class MoveSpiralRoot : MonoBehaviour
                 _trashedCandy.TailCandy.IsBaseCandy = true;
                 baseCandy = _trashedCandy.TailCandy;
             }
-                _trashedCandy.FollowLead = null;
+            _trashedCandy.FollowLead = null;
         }
         else
         {
@@ -267,7 +263,7 @@ public class MoveSpiralRoot : MonoBehaviour
         for (int i = 0; i < StackedCandies.Count; i++)
         {
             if (StackedCandies[i] == candy)
-                return (StackedCandies.Count-1) - i;
+                return (StackedCandies.Count - 1) - i;
         }
 
         return 1;
