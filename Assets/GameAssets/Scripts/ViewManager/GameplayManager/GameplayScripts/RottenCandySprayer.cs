@@ -10,7 +10,7 @@ public class RottenCandySprayer : MonoBehaviour
 
 
 
-    private void OnTriggerEnter(Collider other)
+    protected virtual void OnTriggerEnter(Collider other)
     {
         Candy _candy = other.GetComponent<Candy>();
 

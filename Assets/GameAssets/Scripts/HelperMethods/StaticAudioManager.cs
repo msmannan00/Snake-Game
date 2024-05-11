@@ -1,8 +1,19 @@
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class StaticAudioManager : GenericSingletonClass<StaticAudioManager>
 {
+
+    public void PlayHammerHitSound()
+    {
+        AudioClip clip = Resources.Load<AudioClip>("SoundAssets/HammerHit");
+        AudioSource.PlayClipAtPoint(clip, Camera.main.transform.position);
+    }
+       public void PlayCandyBreakSound()
+    {
+        AudioClip clip = Resources.Load<AudioClip>("SoundAssets/CandyBreak");
+        AudioSource.PlayClipAtPoint(clip, Camera.main.transform.position);
+    }
+
     public void playEatingSound()
     {
         AudioClip clip = Resources.Load<AudioClip>("SoundAssets/eating_sound");
