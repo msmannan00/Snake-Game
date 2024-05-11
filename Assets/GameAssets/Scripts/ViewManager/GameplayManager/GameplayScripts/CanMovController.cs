@@ -4,9 +4,11 @@ using UnityEngine;
 
 public class CanMovController : MonoBehaviour
 {
+    bool isTouching;
     private bool isMousePressed = false;
     public Transform FocusedObj;
     public float followSpeed = 1;
+    [HideInInspector]
     public LayerMask DetectionMask;
     MoveSpiralRoot MoveSpiralController;
     // Start is called before the first frame update
@@ -21,6 +23,7 @@ public class CanMovController : MonoBehaviour
     {
         if (MoveSpiralController.StackedCandies.Count == 0) return;
 
+#if UNITY_EDITOR
         if (Input.GetMouseButton(0))
         {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition); 
@@ -48,16 +51,50 @@ public class CanMovController : MonoBehaviour
             Debug.Log("Mouse button released");
         }
 
+        /////////////////////////detecting touch input
+        ///
 
-        if (isMousePressed)
+#else
+        if (Input.touchCount > 0)
+        {
+            Touch touch = Input.GetTouch(0);
+
+            if (touch.phase == TouchPhase.Began || touch.phase == TouchPhase.Moved)
+            {
+                Ray ray = Camera.main.ScreenPointToRay(touch.position);
+                RaycastHit hit;
+
+                if (Physics.Raycast(ray, out hit, 1000, DetectionMask))
+                {
+                    GameObject hitObject = hit.collider.gameObject;
+                    Debug.Log("Hit object: " + hitObject.name);
+                    isTouching = true;
+
+                    FocusedObj = MoveSpiralController.baseCandy.transform;
+                    currentFocusedPoint = hit.point;
+                }
+                else
+                {
+                    FocusedObj = null;
+                }
+            }
+            else if (touch.phase == TouchPhase.Ended)
+            {
+                isTouching = false;
+                FocusedObj = null;
+                Debug.Log("Touch ended");
+            }
+        }
+#endif
+        if (isMousePressed || isTouching)
         {
 
-            if (FocusedObj && !userSessionManager.Instance.mIsMenuOpened)
+            if (FocusedObj)
             {
-                Debug.LogError("trying to move object");
-                FocusedObj.transform.localPosition = Vector3.Lerp(FocusedObj.transform.localPosition,
-                    new Vector3(-currentFocusedPoint.x, 
-                    FocusedObj.transform.localPosition.y, MoveSpiralController.BaseTransform.localPosition.z +( MoveSpiralController.baseCandy.width * (MoveSpiralController.StackedCandies.Count -1)))
+                Debug.LogError("trying to move : "+ FocusedObj.name);
+                FocusedObj.transform.position = Vector3.Lerp(FocusedObj.transform.position,
+                    new Vector3(currentFocusedPoint.x, 
+                    FocusedObj.transform.position.y, MoveSpiralController.BaseTransform.position.z -( MoveSpiralController.CandyGap * (MoveSpiralController.StackedCandies.Count -1)))
                     , Time.deltaTime * followSpeed);
             }
         }

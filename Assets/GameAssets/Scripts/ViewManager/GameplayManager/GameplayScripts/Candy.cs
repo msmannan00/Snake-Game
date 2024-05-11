@@ -7,12 +7,7 @@ public class Candy : MonoBehaviour
 
     public ColorCode MColorCode;
     public bool HasAlreadyStacked = false;
-    [HideInInspector]
-    public float UpZAxis;
-    [HideInInspector]
-    public float length;
-    [HideInInspector]
-    public float width;
+  
     public float CandyFollowSpeed = 3;
     public bool IsBaseCandy = false;
     public Transform FollowLead;
@@ -28,7 +23,7 @@ public class Candy : MonoBehaviour
     {
         meshFilter = GetComponent<MeshFilter>();
         SpiralRootController = MoveSpiralRoot.Instance;
-        CalculateBounds();
+       
     }
 
     void Update()
@@ -38,34 +33,18 @@ public class Candy : MonoBehaviour
             FollowLead = null;
         if (IsTrashed || IsBaked) return;
 
-        UpZAxis = FollowLead ?  FollowLead.transform.position.z - width : SpiralRootController.BaseTransform.localPosition.z;
+       // UpZAxis = FollowLead ?  FollowLead.transform.position.z - width : SpiralRootController.BaseTransform.localPosition.z;
         if (HasAlreadyStacked && !IsBaseCandy && FollowLead)
         {
-            transform.localPosition = Vector3.Lerp(transform.localPosition, 
-                new Vector3(FollowLead.transform.localPosition.x, FollowLead.transform.localPosition.y, FollowLead.transform.localPosition.z - width),Time.deltaTime * CandyFollowSpeed);
+            transform.position = Vector3.Lerp(transform.position, 
+                new Vector3(FollowLead.transform.position.x, FollowLead.transform.position.y, FollowLead.transform.position.z + SpiralRootController.CandyGap),Time.deltaTime * CandyFollowSpeed);
         }
        
        
 
     }
 
-    void CalculateBounds()
-    {
-        if (meshFilter != null && meshFilter.sharedMesh != null)
-        {
-            // Get the mesh bounds
-            Bounds bounds = meshFilter.sharedMesh.bounds;
-
-            // Calculate width and height in world space
-            float width = bounds.size.x * transform.localScale.x;
-            float height = bounds.size.z * transform.localScale.z;
-            this.width = width;
-            this.length = height;
-            Debug.Log(this.width + " : width");
-          
-        }
-       
-    }
+   
 
     private void OnTriggerEnter(Collider other)
     {
