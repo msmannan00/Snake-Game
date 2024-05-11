@@ -224,9 +224,8 @@ public class GameplayManager : MonoBehaviour, PageController
 
         Action callbackLevel = () =>
         {
-            gameObject.transform.parent.SetSiblingIndex(1);
-            Dictionary<string, object> mData = new Dictionary<string, object> { };
-            StateManager.Instance.OpenStaticScreen("level", gameObject, "levelScreen", null);
+            Scene currentScene = SceneManager.GetActiveScene();
+            SceneManager.LoadScene(currentScene.name);
         };
 
         GameObject alertPrefab = Resources.Load<GameObject>("Prefabs/alerts/alertMenu");

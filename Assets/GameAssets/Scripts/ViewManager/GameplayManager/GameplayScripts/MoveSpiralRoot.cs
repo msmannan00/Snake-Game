@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class MoveSpiralRoot : MonoBehaviour
 {
@@ -91,9 +92,8 @@ public class MoveSpiralRoot : MonoBehaviour
                     GameplayManager manager = gameObject.GetComponent<GameplayManager>();
                     if (manager != null)
                     {
-                        gameObject.transform.parent.SetSiblingIndex(1);
-                        Dictionary<string, object> mData = new Dictionary<string, object> { };
-                        StateManager.Instance.OpenStaticScreen("level", gameObject, "levelScreen", null);
+                        Scene currentScene = SceneManager.GetActiveScene();
+                        SceneManager.LoadScene(currentScene.name);
                     }
                 }
             }

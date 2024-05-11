@@ -1,8 +1,8 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 using TMPro;
-using UnityEngine.UI;
 
 public class WelcomeController : MonoBehaviour, PageController
 {
@@ -12,28 +12,21 @@ public class WelcomeController : MonoBehaviour, PageController
 
     public void onInit(Dictionary<string, object> pData)
     {
-        int mCurrentLevel = PlayerPrefs.GetInt("current_level", 1)-1;
-        aProgress.SetText((Mathf.CeilToInt((mCurrentLevel / 30f) * 100)).ToString()+"%");
-        aProgressShadow.SetText((Mathf.CeilToInt((mCurrentLevel / 30f) * 100)).ToString() + "%");
+        if (!userSessionManager.Instance.mIsAppStarted)
+        {
+            userSessionManager.Instance.mIsAppStarted = true;
+            aProgress.SetText("0%");
+            aProgressShadow.SetText("0%");
+            aProgressPanel.SetActive(true);
+            AnimateProgress();
+        }
     }
 
     public void onPlay()
     {
-        int mCurrentLevel = PlayerPrefs.GetInt("current_level", 1);
-        userSessionManager.Instance.currentLevel = mCurrentLevel;
-        Image panelImage = aProgressPanel.GetComponent<Image>();
-        panelImage.color = new Color(panelImage.color.r, panelImage.color.g, panelImage.color.b, 0);
-        aProgressPanel.SetActive(true);
-
-        panelImage.DOFade(1, 0.5f).OnComplete(() =>
-        {
-            DOVirtual.DelayedCall(1.0f, () =>
-            {
-                gameObject.transform.parent.SetSiblingIndex(1);
-                Dictionary<string, object> mData = new Dictionary<string, object>();
-                StateManager.Instance.OpenStaticScreen("gameplay", gameObject, "gameplayScreen", null);
-            });
-        });
+        gameObject.transform.parent.SetSiblingIndex(1);
+        Dictionary<string, object> mData = new Dictionary<string, object>();
+        StateManager.Instance.OpenStaticScreen("gameplay", gameObject, "gameplayScreen", null);
     }
 
     public void onLevel()
@@ -41,5 +34,26 @@ public class WelcomeController : MonoBehaviour, PageController
         gameObject.transform.parent.SetSiblingIndex(1);
         Dictionary<string, object> mData = new Dictionary<string, object>();
         StateManager.Instance.OpenStaticScreen("level", gameObject, "levelScreen", null);
+    }
+
+    private void AnimateProgress()
+    {
+        DOTween.To(() => 0, x => UpdateProgress(x), 100, 1).OnComplete(() => FadeOutPanel());
+    }
+
+    private void UpdateProgress(int progress)
+    {
+        aProgress.SetText(progress + "%");
+        aProgressShadow.SetText(progress + "%");
+    }
+
+    private void FadeOutPanel()
+    {
+        CanvasGroup canvasGroup = aProgressPanel.GetComponent<CanvasGroup>();
+        if (canvasGroup == null)
+        {
+            canvasGroup = aProgressPanel.AddComponent<CanvasGroup>();
+        }
+        canvasGroup.DOFade(0, 1).OnComplete(() => aProgressPanel.SetActive(false));
     }
 }

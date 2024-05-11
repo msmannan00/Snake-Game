@@ -10,6 +10,7 @@ public class userSessionManager : GenericSingletonClass<userSessionManager>
     public bool mIsLevelRestart = false;
     public bool mIsMenuOpened = false;
     public bool mIsBonusLevelStarted = false;
+    public bool mIsAppStarted = false;
 
     public void OnInitialize(string pProfileUsername, string pProfileID)
     {
