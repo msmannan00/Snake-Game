@@ -25,20 +25,22 @@ public class minigame : MonoBehaviour
 
     void InitializeGrid()
     {
-        // Loop through each row
         for (int j = 0; j < height; j++)
         {
-            // For each row, fill all columns
             for (int i = 0; i < width; i++)
             {
                 int candyIndex = Random.Range(0, candyPrefabs.Length);
                 Image candy = Instantiate(candyPrefabs[candyIndex], gridLayoutGroup.transform);
-                // Calculate position: Note that `i * 100` moves the candy horizontally, `j * 100` vertically
                 candy.rectTransform.anchoredPosition = new Vector2(i * 100, j * 100); // Adjust based on your actual cell size
                 candies[i, j] = candy;
                 candyPositions[i, j] = candy.rectTransform.anchoredPosition;
 
-                // Add event listeners for swiping
+                while ((i >= 2 && candies[i - 1, j].sprite == candy.sprite && candies[i - 2, j].sprite == candy.sprite) ||
+                       (j >= 2 && candies[i, j - 1].sprite == candy.sprite && candies[i, j - 2].sprite == candy.sprite))
+                {
+                    candy.sprite = candyPrefabs[Random.Range(0, candyPrefabs.Length)].sprite;
+                }
+
                 AddSwipeEventTriggers(candy, i, j);
             }
         }
@@ -137,43 +139,69 @@ public class minigame : MonoBehaviour
 
     void AnimateSwap(int x1, int y1, int x2, int y2)
     {
-        DOTween.To(() => candies[x1, y1].rectTransform.localScale, x => candies[x1, y1].rectTransform.localScale = x, new Vector3(1.2f, 1.2f, 1), animationDuration / 2)
-               .OnComplete(() => DOTween.To(() => candies[x1, y1].rectTransform.localScale, x => candies[x1, y1].rectTransform.localScale = x, Vector3.one, animationDuration / 2));
-        DOTween.To(() => candies[x2, y2].rectTransform.localScale, x => candies[x2, y2].rectTransform.localScale = x, new Vector3(1.2f, 1.2f, 1), animationDuration / 2)
-               .OnComplete(() => DOTween.To(() => candies[x2, y2].rectTransform.localScale, x => candies[x2, y2].rectTransform.localScale = x, Vector3.one, animationDuration / 2));
+        // Get initial positions
+        Vector2 pos1 = candies[x1, y1].rectTransform.anchoredPosition;
+        Vector2 pos2 = candies[x2, y2].rectTransform.anchoredPosition;
+
+        // Animate visual movement from pos1 to pos2 and vice versa
+        candies[x1, y1].rectTransform.DOAnchorPos(pos2, animationDuration).SetEase(Ease.OutQuad).OnComplete(() =>
+        {
+            // Reset the position to original after animation to maintain grid integrity
+            candies[x1, y1].rectTransform.anchoredPosition = pos1;
+        });
+        candies[x2, y2].rectTransform.DOAnchorPos(pos1, animationDuration).SetEase(Ease.OutQuad).OnComplete(() =>
+        {
+            // Reset the position to original after animation to maintain grid integrity
+            candies[x2, y2].rectTransform.anchoredPosition = pos2;
+        });
+
+        // Play sound effect
         StaticAudioManager.Instance.playBonusSound();
     }
 
     void CheckForMatchesAndReplace(int x, int y)
     {
         // Horizontal check
-        int count = 1;
-        // Check to the left, ensuring index is within bounds
-        for (int i = x - 1; i >= 0 && candies[i, y].sprite == candies[x, y].sprite; i--, count++) ;
-        // Check to the right, ensuring index is within bounds
-        for (int i = x + 1; i < width && candies[i, y].sprite == candies[x, y].sprite; i++, count++) ;
+        int leftCount = 0;
+        for (int i = x - 1; i >= 0 && candies[i, y].sprite == candies[x, y].sprite; i--, leftCount++) ;
+        int rightCount = 0;
+        for (int i = x + 1; i < width && candies[i, y].sprite == candies[x, y].sprite; i++, rightCount++) ;
 
-        if (count >= 3)
+        int totalHorizontal = 1 + leftCount + rightCount;
+        if (totalHorizontal == 3 || totalHorizontal == 4) // Check for exactly three or four candies
         {
-            for (int i = x - count + 1; i <= x + count - 1 && i < width; i++)
-                if (i >= 0 && i < width) // Additional boundary check
-                    candies[i, y].sprite = candyPrefabs[Random.Range(0, candyPrefabs.Length)].sprite;
+            for (int i = x - leftCount; i <= x + rightCount; i++)
+            {
+                ChangeCandySpriteWithAnimation(candies[i, y]);
+            }
         }
 
-        // Vertical check
-        count = 1;
-        // Check upwards, ensuring index is within bounds
-        for (int j = y - 1; j >= 0 && candies[x, j].sprite == candies[x, y].sprite; j--, count++) ;
-        // Check downwards, ensuring index is within bounds
-        for (int j = y + 1; j < height && candies[x, j].sprite == candies[x, y].sprite; j++, count++) ;
+        // Vertical check (repeated logic for vertical matches if needed)
+        int upCount = 0;
+        for (int j = y - 1; j >= 0 && candies[x, j].sprite == candies[x, y].sprite; j--, upCount++) ;
+        int downCount = 0;
+        for (int j = y + 1; j < height && candies[x, j].sprite == candies[x, y].sprite; j++, downCount++) ;
 
-        if (count >= 3)
+        int totalVertical = 1 + upCount + downCount;
+        if (totalVertical == 3 || totalVertical == 4) // Check for exactly three or four candies
         {
-            for (int j = y - count + 1; j <= y + count - 1 && j < height; j++)
-                if (j >= 0 && j < height) // Additional boundary check
-                    candies[x, j].sprite = candyPrefabs[Random.Range(0, candyPrefabs.Length)].sprite;
+            for (int j = y - upCount; j <= y + downCount; j++)
+            {
+                ChangeCandySpriteWithAnimation(candies[x, j]);
+            }
         }
     }
 
+    void ChangeCandySpriteWithAnimation(Image candy)
+    {
+        candy.rectTransform.DOScale(Vector3.zero, 0.25f) // Scale down
+            .OnComplete(() =>
+            {
+                // Change sprite when scaled down
+                candy.sprite = candyPrefabs[Random.Range(0, candyPrefabs.Length)].sprite;
+                // Scale back up to original size
+                candy.rectTransform.DOScale(Vector3.one, 0.25f);
+            });
+    }
 
 }
