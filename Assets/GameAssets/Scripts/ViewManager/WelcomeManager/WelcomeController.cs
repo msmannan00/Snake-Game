@@ -12,6 +12,7 @@ public class WelcomeController : MonoBehaviour, PageController
 
     public void onInit(Dictionary<string, object> pData)
     {
+        userSessionManager.Instance.currentLevel = PlayerPrefs.GetInt("current_level", 0);
         if (!userSessionManager.Instance.mIsAppStarted)
         {
             userSessionManager.Instance.mIsAppStarted = true;
